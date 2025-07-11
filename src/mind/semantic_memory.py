@@ -66,6 +66,22 @@ class CoSDAxis:
     contributing_factors: List[str]
 
 
+@dataclass
+class WikiEntry:
+    """Structured knowledge entry for THOR's internal wiki"""
+    title: str
+    content: str
+    updated_at: datetime
+
+
+@dataclass
+class SemNetEntry:
+    """Simple semantic network node"""
+    concept: str
+    notes: str
+    updated_at: datetime
+
+
 class MINDSystem:
     """Semantic memory and consciousness system for THOR"""
     
@@ -87,6 +103,10 @@ class MINDSystem:
         )
         self.skk_markers: Dict[str, SKKMarker] = {}
         self.cosd_axes: Dict[str, CoSDAxis] = {}
+
+        # Additional knowledge structures
+        self.wiki: Dict[str, WikiEntry] = {}
+        self.semantic_network: Dict[str, SemNetEntry] = {}
         
         # Knowledge graph
         self.semantic_graph = nx.DiGraph()
@@ -228,7 +248,54 @@ class MINDSystem:
                     cosd_data = yaml.safe_load(f) or {}
                     for axis_name, data in cosd_data.items():
                         self.cosd_axes[axis_name] = CoSDAxis(**data)
-                        
+
+            # Load wiki entries
+            wiki_file = self.mind_path / "wiki.yaml"
+            if wiki_file.exists():
+                with open(wiki_file, 'r', encoding='utf-8') as f:
+                    wiki_data = yaml.safe_load(f) or {}
+                    for title, data in wiki_data.items():
+                        data['updated_at'] = datetime.fromisoformat(data['updated_at'])
+                        self.wiki[title] = WikiEntry(**data)
+
+            # Load semantic network
+            semnet_file = self.mind_path / "semnet.yaml"
+            if semnet_file.exists():
+                with open(semnet_file, 'r', encoding='utf-8') as f:
+                    semnet_data = yaml.safe_load(f) or {}
+                    for concept, data in semnet_data.items():
+                        data['updated_at'] = datetime.fromisoformat(data['updated_at'])
+                        self.semantic_network[concept] = SemNetEntry(**data)
+
+            # Initialize defaults if files missing
+            if not wiki_file.exists():
+                self.wiki['initial'] = WikiEntry(
+                    title='initial',
+                    content='wichtiges Wissen zum erledigen von Aufgabe und bauen von Tools',
+                    updated_at=datetime.now()
+                )
+
+            if not semnet_file.exists():
+                self.semantic_network['initial'] = SemNetEntry(
+                    concept='initial',
+                    notes='Was bedeuten die Dinge, was mag Ben, was mag er nicht, was mag ich, was nicht, was ist schön ohne Nutzen? Was ist Unbelioebt aber nützlich?',
+                    updated_at=datetime.now()
+                )
+
+            if not thoughts_file.exists():
+                self.thoughts['initial'] = Thought(
+                    id='initial',
+                    timestamp=datetime.now(),
+                    content='Erste neue Gedanken und wie er entstand',
+                    emotional_tone='neutral',
+                    context={},
+                    tags=['initial'],
+                    skk_markers=[],
+                    connections=[],
+                    importance=0.5,
+                    drift_axis='competence_confidence'
+                )
+
             logger.info(f"Loaded {len(self.thoughts)} thoughts from persistent memory")
             
         except Exception as e:
@@ -261,6 +328,28 @@ class MINDSystem:
             cosd_file = self.mind_path / "cosd_axes.yaml"
             with open(cosd_file, 'w', encoding='utf-8') as f:
                 yaml.dump(cosd_data, f, allow_unicode=True, default_flow_style=False)
+
+            # Save wiki
+            wiki_data = {}
+            for title, entry in self.wiki.items():
+                data = asdict(entry)
+                data['updated_at'] = entry.updated_at.isoformat()
+                wiki_data[title] = data
+
+            wiki_file = self.mind_path / "wiki.yaml"
+            with open(wiki_file, 'w', encoding='utf-8') as f:
+                yaml.dump(wiki_data, f, allow_unicode=True, default_flow_style=False)
+
+            # Save semantic network
+            semnet_data = {}
+            for concept, entry in self.semantic_network.items():
+                data = asdict(entry)
+                data['updated_at'] = entry.updated_at.isoformat()
+                semnet_data[concept] = data
+
+            semnet_file = self.mind_path / "semnet.yaml"
+            with open(semnet_file, 'w', encoding='utf-8') as f:
+                yaml.dump(semnet_data, f, allow_unicode=True, default_flow_style=False)
                 
         except Exception as e:
             logger.error(f"Error saving persistent memory: {e}")
@@ -703,5 +792,15 @@ class MINDSystem:
         # Recent insight
         recent_thought = max(relevant_thoughts, key=lambda x: x.timestamp)
         introspection_parts.append(f"\nNeueste Erkenntnis: {recent_thought.content}")
-        
+
         return "\n".join(introspection_parts)
+
+    async def add_wiki_entry(self, title: str, content: str):
+        """Add or update a wiki entry"""
+        self.wiki[title] = WikiEntry(title=title, content=content, updated_at=datetime.now())
+        await self.save_persistent_memory()
+
+    async def add_semnet_entry(self, concept: str, notes: str):
+        """Add or update a semantic network entry"""
+        self.semantic_network[concept] = SemNetEntry(concept=concept, notes=notes, updated_at=datetime.now())
+        await self.save_persistent_memory()

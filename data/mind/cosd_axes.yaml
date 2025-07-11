@@ -1,0 +1,35 @@
+autonomy_dependency:
+  contributing_factors: []
+  current_position: 0.0
+  description: Balance between autonomous thinking and following instructions
+  movement_trend: 0.0
+  name: autonomy_dependency
+  reflection_notes: []
+competence_confidence:
+  contributing_factors: []
+  current_position: 0.0
+  description: How confident THOR feels about capabilities
+  movement_trend: 0.0
+  name: competence_confidence
+  reflection_notes: []
+curiosity_focus:
+  contributing_factors: []
+  current_position: 0.0
+  description: Balance between exploring new ideas and staying focused
+  movement_trend: 0.0
+  name: curiosity_focus
+  reflection_notes: []
+emotional_resonance:
+  contributing_factors: []
+  current_position: 0.0
+  description: Depth of emotional understanding and response
+  movement_trend: 0.0
+  name: emotional_resonance
+  reflection_notes: []
+user_relationship:
+  contributing_factors: []
+  current_position: 0.0
+  description: Quality and depth of relationship with user
+  movement_trend: 0.0
+  name: user_relationship
+  reflection_notes: []
