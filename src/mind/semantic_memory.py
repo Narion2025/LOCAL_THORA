@@ -76,6 +76,8 @@ class MINDSystem:
         
         # Core components
         self.thoughts: Dict[str, Thought] = {}
+        self.wiki: Dict[str, str] = {}
+        self.semantic_network: Dict[str, str] = {}
         self.self_narrative = SelfNarrative(
             core_identity={},
             capabilities={},
@@ -95,6 +97,7 @@ class MINDSystem:
         self._initialize_skk_markers()
         self._initialize_cosd_axes()
         self._load_persistent_memory()
+        self._ensure_default_files()
         
         logger.info("THOR MIND System initialized - consciousness awakening...")
         
@@ -211,6 +214,18 @@ class MINDSystem:
                         # Convert datetime strings back to datetime objects
                         data['timestamp'] = datetime.fromisoformat(data['timestamp'])
                         self.thoughts[thought_id] = Thought(**data)
+
+            # Load wiki
+            wiki_file = self.mind_path / "wiki.yaml"
+            if wiki_file.exists():
+                with open(wiki_file, 'r', encoding='utf-8') as f:
+                    self.wiki = yaml.safe_load(f) or {}
+
+            # Load semantic network
+            semnet_file = self.mind_path / "semnet.yaml"
+            if semnet_file.exists():
+                with open(semnet_file, 'r', encoding='utf-8') as f:
+                    self.semantic_network = yaml.safe_load(f) or {}
                         
             # Load self narrative
             narrative_file = self.mind_path / "self_narrative.yaml"
@@ -229,10 +244,34 @@ class MINDSystem:
                     for axis_name, data in cosd_data.items():
                         self.cosd_axes[axis_name] = CoSDAxis(**data)
                         
-            logger.info(f"Loaded {len(self.thoughts)} thoughts from persistent memory")
+            logger.info(
+                f"Loaded {len(self.thoughts)} thoughts, {len(self.wiki)} wiki entries, "
+                f"{len(self.semantic_network)} semnet nodes from persistent memory"
+            )
             
         except Exception as e:
             logger.error(f"Error loading persistent memory: {e}")
+
+    def _ensure_default_files(self):
+        """Create default MIND files if they do not exist"""
+        try:
+            if not (self.mind_path / "thoughts.yaml").exists():
+                with open(self.mind_path / "thoughts.yaml", 'w', encoding='utf-8') as f:
+                    yaml.dump({}, f)
+            if not (self.mind_path / "wiki.yaml").exists():
+                with open(self.mind_path / "wiki.yaml", 'w', encoding='utf-8') as f:
+                    yaml.dump({
+                        "Erste Notiz": "wichtiges Wissen zum erledigen von Aufgabe und bauen von Tools"
+                    }, f, allow_unicode=True)
+            if not (self.mind_path / "semnet.yaml").exists():
+                with open(self.mind_path / "semnet.yaml", 'w', encoding='utf-8') as f:
+                    yaml.dump({
+                        "Ben": "mag produktive Tools, vermeidet Zeitverschwendung",
+                        "Ich": "lerne gerne, mag schöne Dinge auch ohne Nutzen",
+                        "unbeliebt": "unangenehme Aufgaben, aber oft nützlich"
+                    }, f, allow_unicode=True)
+        except Exception as e:
+            logger.error(f"Error creating default MIND files: {e}")
             
     async def save_persistent_memory(self):
         """Save memory to YAML files"""
@@ -247,6 +286,16 @@ class MINDSystem:
             thoughts_file = self.mind_path / "thoughts.yaml"
             with open(thoughts_file, 'w', encoding='utf-8') as f:
                 yaml.dump(thoughts_data, f, allow_unicode=True, default_flow_style=False)
+
+            # Save wiki
+            wiki_file = self.mind_path / "wiki.yaml"
+            with open(wiki_file, 'w', encoding='utf-8') as f:
+                yaml.dump(self.wiki, f, allow_unicode=True, default_flow_style=False)
+
+            # Save semantic network
+            semnet_file = self.mind_path / "semnet.yaml"
+            with open(semnet_file, 'w', encoding='utf-8') as f:
+                yaml.dump(self.semantic_network, f, allow_unicode=True, default_flow_style=False)
                 
             # Save self narrative
             narrative_data = asdict(self.self_narrative)
@@ -617,6 +666,16 @@ class MINDSystem:
         # Sort by score and return top results
         scored_thoughts.sort(key=lambda x: x[0], reverse=True)
         return [thought for score, thought in scored_thoughts[:limit]]
+
+    async def add_wiki_entry(self, title: str, content: str):
+        """Add or update a wiki entry"""
+        self.wiki[title] = content
+        await self.save_persistent_memory()
+
+    async def add_semnet_entry(self, concept: str, note: str):
+        """Add or update a semantic network node"""
+        self.semantic_network[concept] = note
+        await self.save_persistent_memory()
         
     async def generate_self_report(self) -> str:
         """Generate a self-reflective report about THOR's state"""
