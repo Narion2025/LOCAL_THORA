@@ -1,0 +1,12 @@
+initial:
+  connections: []
+  content: Erste neue Gedanken und wie er entstand
+  context: {}
+  drift_axis: competence_confidence
+  emotional_tone: neutral
+  id: initial
+  importance: 0.5
+  skk_markers: []
+  tags:
+  - initial
+  timestamp: '2025-07-11T23:19:53.436418'
