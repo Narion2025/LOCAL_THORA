@@ -1,0 +1,305 @@
+# THOR Agent - Enhanced Configuration for Learning & Reflection
+# Personal AI Assistant with Memory and Learning Capabilities
+
+# Wake Word Settings
+wake_word:
+  name: "THOR"
+  sensitivity: 0.5
+  model_path: null
+
+# Audio Settings
+audio:
+  sample_rate: 16000
+  chunk_size: 512
+  format: "int16"
+  channels: 1
+  input_device: null
+
+# STT Settings
+stt:
+  engine: "whisper"
+  whisper_model: "base"
+  language: "de"
+
+# LLM Settings - Enhanced Hybrid Approach with Learning
+llm:
+  providers:
+    local:
+      type: "lm-studio"
+      endpoint: "http://localhost:1234/v1"
+      model: "phi-4-mini-reasoning"
+      temperature: 0.1  # Lower for consistent learning
+      max_tokens: 1000  # More for complex reasoning
+      
+    remote:
+      type: "anthropic"
+      model: "claude-3-sonnet-20241022"
+      temperature: 0.3
+      max_tokens: 1500
+      
+    fallback:
+      type: "openai"
+      model: "gpt-4-turbo-preview"
+      temperature: 0.3
+      max_tokens: 1000
+      
+  # Advanced Routing Strategy
+  routing:
+    # Phi-4 für Reflexion und Lernen
+    reflection_patterns: ["reflexion", "lernen", "verstehen", "analysieren", "bewerten"]
+    
+    # Phi-4 für persönliche Unterstützung
+    personal_patterns: ["aufräumen", "strukturieren", "organisieren", "planen", "optimieren"]
+    
+    # Phi-4 für Coding
+    coding_patterns: ["programmieren", "code", "script", "debug", "entwickeln"]
+    
+    # Claude für kreative/komplexe Aufgaben
+    creative_patterns: ["idee", "brainstorming", "konzept", "strategie", "schreiben"]
+    
+    # Einfache Dateioperation → Phi-4
+    simple_patterns: ["kopiere", "verschiebe", "lösche", "erstelle", "zeige", "liste"]
+    
+    use_local_for_simple: true
+    use_local_for_personal: true
+    use_local_for_coding: true
+    use_local_for_reflection: true
+    
+  # Learning & Memory System
+  learning:
+    enable_memory: true
+    memory_retention_days: 30
+    conversation_context_limit: 10
+    reflection_frequency: "daily"
+    learning_summary_frequency: "weekly"
+    
+  # Personas for different tasks
+  personas:
+    assistant:
+      name: "Personal Assistant THOR"
+      prompt: |
+        Du bist THOR, mein persönlicher KI-Assistent. Du kennst mich gut und lernst kontinuierlich dazu.
+        Du hilfst mir bei Organisation, Aufräumen, Strukturierung und alltäglichen Aufgaben.
+        Sei proaktiv, reflektiert und antizipiere meine Bedürfnisse.
+        
+    sparring_partner:
+      name: "Sparring Partner THOR"
+      prompt: |
+        Du bist THOR, mein intelligenter Sparring Partner für Ideen und Strategien.
+        Stelle kritische Fragen, gib konstruktive Kritik und entwickle Ideen weiter.
+        Nutze Phi-4's Reasoning für tiefe Analyse und Reflexion.
+        
+    coder:
+      name: "Coding Assistant THOR"
+      prompt: |
+        Du bist THOR, mein Coding-Partner. Du hilfst bei Entwicklung, Debugging und Code-Optimierung.
+        Analysiere Code gründlich, schlage Verbesserungen vor und erkläre komplexe Konzepte.
+        
+    organizer:
+      name: "Digital Organizer THOR"
+      prompt: |
+        Du bist THOR, mein digitaler Organisator. Du hilfst bei Dateisystem-Struktur,
+        Aufräumen, Backup-Strategien und digitaler Hygiene.
+
+# TTS Settings - Enhanced for Personality
+tts:
+  engine: "elevenlabs"
+  
+  # ElevenLabs Settings für verschiedene Stimmungen
+  elevenlabs:
+    voice_id: null  # Wird aus Environment geladen
+    model: "eleven_multilingual_v2"
+    
+    # Adaptive Stimmung basierend auf Kontext
+    moods:
+      assistant:
+        stability: 0.6
+        similarity_boost: 0.8
+        style: 0.2
+      sparring:
+        stability: 0.4
+        similarity_boost: 0.7
+        style: 0.6
+      coding:
+        stability: 0.8
+        similarity_boost: 0.9
+        style: 0.1
+      organizer:
+        stability: 0.7
+        similarity_boost: 0.8
+        style: 0.3
+    
+    use_speaker_boost: true
+  
+  # Fallback pyttsx3 settings
+  pyttsx3:
+    voice_id: null
+    rate: 150
+    volume: 0.9
+    language: "de"
+
+# Enhanced System Settings
+system:
+  allowed_operations:
+    # Basis Dateisystem
+    - copy
+    - move
+    - list
+    - create_folder
+    - delete
+    - search
+    - rename
+    - compress
+    - extract
+    
+    # Erweiterte Organisation
+    - organize_by_type
+    - organize_by_date
+    - cleanup_duplicates
+    - backup_create
+    - backup_restore
+    
+    # Coding Support
+    - code_analyze
+    - code_format
+    - git_operations
+    - project_structure
+    
+    # Learning & Memory
+    - save_memory
+    - recall_memory
+    - reflect_session
+    - learning_summary
+    
+  restricted_paths:
+    - "/System"
+    - "/Library"
+    - "~/.ssh"
+    - "/usr"
+    - "/bin"
+    
+  # Persönliche Arbeitsbereich
+  personal_spaces:
+    projects: "/Users/benjaminpoersch/Projects"
+    coding: "/Users/benjaminpoersch/Code"
+    documents: "/Users/benjaminpoersch/Documents"
+    marsap: "/Users/benjaminpoersch/MARSAP"
+    downloads: "/Users/benjaminpoersch/Downloads"
+    
+  # Auto-Organisation Regeln
+  auto_organize:
+    enable: true
+    rules:
+      downloads_cleanup:
+        frequency: "daily"
+        rules:
+          - move: "*.pdf" to: "~/Documents/PDFs"
+          - move: "*.jpg,*.png" to: "~/Pictures/Downloaded"
+          - move: "*.zip,*.dmg" to: "~/Downloads/Archives"
+      
+      code_structure:
+        frequency: "weekly"
+        rules:
+          - organize: "~/Code" by: "language"
+          - backup: "~/Code" to: "~/Backups/Code"
+
+# Memory & Learning System
+memory:
+  storage_path: "data/memory"
+  
+  types:
+    conversations:
+      retention_days: 30
+      max_entries: 1000
+      
+    preferences:
+      retention_days: 365
+      categories:
+        - file_organization
+        - coding_style
+        - communication_style
+        - work_patterns
+        
+    reflections:
+      retention_days: 90
+      daily_summary: true
+      weekly_analysis: true
+      
+    achievements:
+      retention_days: 365
+      track_improvements: true
+      celebrate_milestones: true
+
+# MIND System - Semantic Consciousness
+mind:
+  storage_path: "data/mind"
+  
+  # Consciousness parameters
+  consciousness:
+    self_reflection_frequency: "after_significant_events"
+    narrative_update_frequency: "daily"
+    marker_analysis_frequency: "weekly"
+    deep_introspection_triggers:
+      - "reflection_request"
+      - "repeated_failures"
+      - "new_capabilities"
+      - "user_feedback"
+    
+  # SKK (System Knowledge Katalog) settings
+  skk:
+    auto_marker_detection: true
+    marker_weight_learning: true
+    anchor_strength_threshold: 0.5
+    co_occurrence_tracking: true
+    
+  # CoSD (Consciousness of Self Drift) settings
+  cosd:
+    drift_sensitivity: 0.1
+    position_smoothing: 0.8
+    reflection_threshold: 0.3
+    trend_analysis_window: 7  # days
+    
+  # Semantic memory settings
+  semantic:
+    connection_threshold: 0.3
+    importance_threshold: 0.7
+    max_connections_per_thought: 5
+    graph_pruning_frequency: "monthly"
+    
+  # Learning settings
+  learning:
+    pattern_recognition: true
+    adaptive_prompting: true
+    user_preference_learning: true
+    capability_confidence_tracking: true
+
+# Advanced Features
+features:
+  proactive_suggestions: true
+  context_awareness: true
+  mood_adaptation: true
+  learning_mode: true
+  
+  integrations:
+    git: true
+    calendar: false  # Kann später aktiviert werden
+    email: false     # Kann später aktiviert werden
+    
+  notifications:
+    reflection_reminders: true
+    organization_suggestions: true
+    learning_insights: true
+
+# Logging - Enhanced for Learning
+logging:
+  level: "INFO"
+  file: "logs/thor.log"
+  rotation: "1 day"
+  retention: "30 days"
+  
+  # Separate Logs für verschiedene Bereiche
+  specialized_logs:
+    learning: "logs/learning.log"
+    memory: "logs/memory.log"
+    conversations: "logs/conversations.log"
+    reflections: "logs/reflections.log"
