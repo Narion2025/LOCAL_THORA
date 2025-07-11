@@ -25,12 +25,9 @@ class InteractiveThorVoice:
         self.is_running = False
         self.current_mode = "Inaktiv"
         
-        # Erstelle GUI
-        self.setup_gui()
-        
         # TTS-Einstellungen
         self.voice_enabled = True
-        self.elevenlabs_api_key = "sk_0d03191d7dac9b02233d9a1b3fde02764612ed05e879af42"
+        self.elevenlabs_api_key = "sk_a7f0fbc02afb79e9f34ad14e8773aa80e83b930d47c0bf53"
         self.voice_id = "nF9mrdeA89H7gsev6yt0"  # Otto's Stimme
         
         # Initialisiere TTS-Engines Liste
@@ -38,6 +35,9 @@ class InteractiveThorVoice:
         
         # Teste TTS-Verfügbarkeit
         self.test_tts_availability()
+        
+        # Erstelle GUI
+        self.setup_gui()
         
     def test_tts_availability(self):
         """Teste welche TTS-Engines verfügbar sind"""
@@ -506,7 +506,7 @@ class InteractiveThorVoice:
             return
             
         self.current_mode = "Lauschend"
-        self.mode_label.config(text="Modus: Lauschend 👂", fg='orange')
+        self.mode_label.config(text="Modus: Lauschend ��", fg='orange')
         
         self.add_chat_message("User", "👂 Lausch-Modus aktiviert")
         self.speak("Lausch-Modus aktiviert. Ich höre kontinuierlich zu.")
@@ -624,4 +624,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main() 
+    main()
