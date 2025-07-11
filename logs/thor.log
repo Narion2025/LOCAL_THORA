@@ -1,0 +1,136 @@
+2025-07-11 20:24:34.064 | INFO     | memory.memory_manager:__init__:55 - Memory Manager initialized
+2025-07-11 20:24:34.064 | INFO     | mind.semantic_memory:_load_persistent_memory:232 - Loaded 0 thoughts from persistent memory
+2025-07-11 20:24:34.064 | INFO     | mind.semantic_memory:__init__:99 - THOR MIND System initialized - consciousness awakening...
+2025-07-11 20:24:34.065 | INFO     | mind.marker_manager:_load_persistent_markers:216 - Loaded 11 markers and 0 anchors
+2025-07-11 20:24:34.065 | INFO     | mind.marker_manager:__init__:62 - THOR Marker Manager initialized
+2025-07-11 20:24:34.065 | INFO     | mind.proactive_assistant:__init__:104 - 🔍 THOR Proactive Assistant initialized - starting environment analysis
+2025-07-11 20:29:23.186 | INFO     | memory.memory_manager:__init__:55 - Memory Manager initialized
+2025-07-11 20:29:23.186 | INFO     | mind.semantic_memory:_load_persistent_memory:232 - Loaded 0 thoughts from persistent memory
+2025-07-11 20:29:23.186 | INFO     | mind.semantic_memory:__init__:99 - THOR MIND System initialized - consciousness awakening...
+2025-07-11 20:29:23.187 | INFO     | mind.marker_manager:_load_persistent_markers:216 - Loaded 11 markers and 0 anchors
+2025-07-11 20:29:23.187 | INFO     | mind.marker_manager:__init__:62 - THOR Marker Manager initialized
+2025-07-11 20:29:23.187 | INFO     | mind.proactive_assistant:__init__:104 - 🔍 THOR Proactive Assistant initialized - starting environment analysis
+2025-07-11 20:29:23.187 | INFO     | __main__:initialize_components:83 - Initializing THOR components...
+2025-07-11 20:29:23.187 | INFO     | wake_word:__init__:233 - Using Mock Wake Word Detector
+2025-07-11 20:29:23.187 | INFO     | audio_recorder:__init__:269 - Using Mock Audio Recorder
+2025-07-11 20:29:23.187 | INFO     | command_processor:__init__:531 - Using Mock Command Processor
+2025-07-11 20:29:23.187 | INFO     | enhanced_action_executor:__init__:313 - Using Mock Action Executor
+2025-07-11 20:29:23.187 | INFO     | tts_engine:__init__:327 - Using Mock TTS Engine (console output only)
+2025-07-11 20:29:23.187 | INFO     | __main__:initialize_components:92 - ✅ Mock components initialized
+2025-07-11 20:29:23.187 | INFO     | wake_word:start:238 - Mock wake word detector started - automatic activation in 3 seconds
+2025-07-11 20:29:23.187 | INFO     | __main__:run:108 - 🔨 THOR Agent ready (Mock Mode)
+2025-07-11 20:29:26.192 | INFO     | wake_word:auto_trigger:243 - Mock wake word triggered!
+2025-07-11 20:29:26.192 | INFO     | __main__:on_wake_word_detected:98 - ⚡ THOR awakened! Mock mode - simulating response
+2025-07-11 20:29:28.188 | INFO     | __main__:on_wake_word_detected:98 - ⚡ THOR awakened! Mock mode - simulating response
+2025-07-11 21:04:46.428 | INFO     | memory.memory_manager:__init__:55 - Memory Manager initialized
+2025-07-11 21:04:46.429 | INFO     | mind.semantic_memory:_load_persistent_memory:232 - Loaded 0 thoughts from persistent memory
+2025-07-11 21:04:46.429 | INFO     | mind.semantic_memory:__init__:99 - THOR MIND System initialized - consciousness awakening...
+2025-07-11 21:04:46.429 | INFO     | mind.marker_manager:_load_persistent_markers:216 - Loaded 11 markers and 0 anchors
+2025-07-11 21:04:46.429 | INFO     | mind.marker_manager:__init__:62 - THOR Marker Manager initialized
+2025-07-11 21:04:46.429 | INFO     | mind.proactive_assistant:__init__:104 - 🔍 THOR Proactive Assistant initialized - starting environment analysis
+2025-07-11 21:04:46.429 | INFO     | __main__:initialize_components:83 - Initializing THOR components...
+2025-07-11 21:04:46.429 | INFO     | wake_word:__init__:233 - Using Mock Wake Word Detector
+2025-07-11 21:04:46.429 | INFO     | audio_recorder:__init__:269 - Using Mock Audio Recorder
+2025-07-11 21:04:46.429 | INFO     | command_processor:__init__:531 - Using Mock Command Processor
+2025-07-11 21:04:46.429 | INFO     | enhanced_action_executor:__init__:313 - Using Mock Action Executor
+2025-07-11 21:04:46.429 | INFO     | tts_engine:__init__:327 - Using Mock TTS Engine (console output only)
+2025-07-11 21:04:46.429 | INFO     | __main__:initialize_components:92 - ✅ Mock components initialized
+2025-07-11 21:04:46.429 | INFO     | wake_word:start:238 - Mock wake word detector started - automatic activation in 3 seconds
+2025-07-11 21:04:46.430 | INFO     | __main__:run:108 - 🔨 THOR Agent ready (Mock Mode)
+2025-07-11 21:04:49.435 | INFO     | wake_word:auto_trigger:243 - Mock wake word triggered!
+2025-07-11 21:04:49.435 | INFO     | __main__:on_wake_word_detected:98 - ⚡ THOR awakened! Mock mode - simulating response
+2025-07-11 21:04:51.431 | INFO     | __main__:on_wake_word_detected:98 - ⚡ THOR awakened! Mock mode - simulating response
+2025-07-11 21:06:41.083 | INFO     | memory.memory_manager:__init__:55 - Memory Manager initialized
+2025-07-11 21:06:41.084 | INFO     | mind.semantic_memory:_load_persistent_memory:232 - Loaded 0 thoughts from persistent memory
+2025-07-11 21:06:41.084 | INFO     | mind.semantic_memory:__init__:99 - THOR MIND System initialized - consciousness awakening...
+2025-07-11 21:06:41.084 | INFO     | mind.marker_manager:_load_persistent_markers:216 - Loaded 11 markers and 0 anchors
+2025-07-11 21:06:41.084 | INFO     | mind.marker_manager:__init__:62 - THOR Marker Manager initialized
+2025-07-11 21:06:41.084 | INFO     | mind.proactive_assistant:__init__:104 - 🔍 THOR Proactive Assistant initialized - starting environment analysis
+2025-07-11 21:06:41.085 | INFO     | __main__:initialize_components:83 - Initializing THOR components...
+2025-07-11 21:06:41.085 | INFO     | wake_word:__init__:233 - Using Mock Wake Word Detector
+2025-07-11 21:06:41.085 | INFO     | audio_recorder:__init__:269 - Using Mock Audio Recorder
+2025-07-11 21:06:41.085 | INFO     | command_processor:__init__:531 - Using Mock Command Processor
+2025-07-11 21:06:41.085 | INFO     | enhanced_action_executor:__init__:313 - Using Mock Action Executor
+2025-07-11 21:06:41.085 | INFO     | tts_engine:__init__:327 - Using Mock TTS Engine (console output only)
+2025-07-11 21:06:41.085 | INFO     | __main__:initialize_components:92 - ✅ Mock components initialized
+2025-07-11 21:06:41.085 | INFO     | wake_word:start:238 - Mock wake word detector started - automatic activation in 3 seconds
+2025-07-11 21:06:41.085 | INFO     | __main__:run:108 - 🔨 THOR Agent ready (Mock Mode)
+2025-07-11 21:06:44.091 | INFO     | wake_word:auto_trigger:243 - Mock wake word triggered!
+2025-07-11 21:06:44.091 | INFO     | __main__:on_wake_word_detected:98 - ⚡ THOR awakened! Mock mode - simulating response
+2025-07-11 21:06:46.087 | INFO     | __main__:on_wake_word_detected:98 - ⚡ THOR awakened! Mock mode - simulating response
+2025-07-11 21:15:59.638 | INFO     | memory.memory_manager:__init__:55 - Memory Manager initialized
+2025-07-11 21:15:59.639 | INFO     | mind.semantic_memory:_load_persistent_memory:232 - Loaded 0 thoughts from persistent memory
+2025-07-11 21:15:59.639 | INFO     | mind.semantic_memory:__init__:99 - THOR MIND System initialized - consciousness awakening...
+2025-07-11 21:15:59.639 | INFO     | mind.marker_manager:_load_persistent_markers:216 - Loaded 11 markers and 0 anchors
+2025-07-11 21:15:59.639 | INFO     | mind.marker_manager:__init__:62 - THOR Marker Manager initialized
+2025-07-11 21:15:59.639 | INFO     | mind.proactive_assistant:__init__:104 - 🔍 THOR Proactive Assistant initialized - starting environment analysis
+2025-07-11 21:15:59.745 | INFO     | main:initialize_components:83 - Initializing THOR components...
+2025-07-11 21:15:59.757 | INFO     | wake_word:__init__:233 - Using Mock Wake Word Detector
+2025-07-11 21:15:59.780 | INFO     | audio_recorder:__init__:269 - Using Mock Audio Recorder
+2025-07-11 21:15:59.792 | INFO     | command_processor:__init__:531 - Using Mock Command Processor
+2025-07-11 21:15:59.793 | INFO     | enhanced_action_executor:__init__:313 - Using Mock Action Executor
+2025-07-11 21:15:59.794 | INFO     | tts_engine:__init__:327 - Using Mock TTS Engine (console output only)
+2025-07-11 21:15:59.794 | INFO     | main:initialize_components:92 - ✅ Mock components initialized
+2025-07-11 21:15:59.794 | INFO     | wake_word:start:238 - Mock wake word detector started - automatic activation in 3 seconds
+2025-07-11 21:15:59.809 | INFO     | main:run:108 - 🔨 THOR Agent ready (Mock Mode)
+2025-07-11 21:16:02.807 | INFO     | wake_word:auto_trigger:243 - Mock wake word triggered!
+2025-07-11 21:16:02.807 | INFO     | main:on_wake_word_detected:98 - ⚡ THOR awakened! Mock mode - simulating response
+2025-07-11 21:16:04.813 | INFO     | main:on_wake_word_detected:98 - ⚡ THOR awakened! Mock mode - simulating response
+2025-07-11 21:16:06.457 | INFO     | main:on_wake_word_detected:98 - ⚡ THOR awakened! Mock mode - simulating response
+2025-07-11 21:16:35.327 | INFO     | main:on_wake_word_detected:98 - ⚡ THOR awakened! Mock mode - simulating response
+2025-07-11 21:20:16.801 | INFO     | memory.memory_manager:__init__:55 - Memory Manager initialized
+2025-07-11 21:20:16.802 | INFO     | mind.semantic_memory:_load_persistent_memory:232 - Loaded 0 thoughts from persistent memory
+2025-07-11 21:20:16.802 | INFO     | mind.semantic_memory:__init__:99 - THOR MIND System initialized - consciousness awakening...
+2025-07-11 21:20:16.802 | INFO     | mind.marker_manager:_load_persistent_markers:216 - Loaded 11 markers and 0 anchors
+2025-07-11 21:20:16.802 | INFO     | mind.marker_manager:__init__:62 - THOR Marker Manager initialized
+2025-07-11 21:20:16.802 | INFO     | mind.proactive_assistant:__init__:104 - 🔍 THOR Proactive Assistant initialized - starting environment analysis
+2025-07-11 21:20:16.803 | INFO     | main:initialize_components:83 - Initializing THOR components...
+2025-07-11 21:20:16.803 | INFO     | wake_word:__init__:233 - Using Mock Wake Word Detector
+2025-07-11 21:20:16.803 | INFO     | audio_recorder:__init__:269 - Using Mock Audio Recorder
+2025-07-11 21:20:16.803 | INFO     | command_processor:__init__:531 - Using Mock Command Processor
+2025-07-11 21:20:16.803 | INFO     | enhanced_action_executor:__init__:313 - Using Mock Action Executor
+2025-07-11 21:20:16.803 | INFO     | tts_engine:__init__:327 - Using Mock TTS Engine (console output only)
+2025-07-11 21:20:16.803 | INFO     | main:initialize_components:92 - ✅ Mock components initialized
+2025-07-11 21:20:16.803 | INFO     | wake_word:start:238 - Mock wake word detector started - automatic activation in 3 seconds
+2025-07-11 21:20:16.803 | INFO     | main:run:108 - 🔨 THOR Agent ready (Mock Mode)
+2025-07-11 21:20:19.805 | INFO     | wake_word:auto_trigger:243 - Mock wake word triggered!
+2025-07-11 21:20:19.805 | INFO     | main:on_wake_word_detected:98 - ⚡ THOR awakened! Mock mode - simulating response
+2025-07-11 21:20:21.804 | INFO     | main:on_wake_word_detected:98 - ⚡ THOR awakened! Mock mode - simulating response
+2025-07-11 21:20:22.570 | INFO     | main:on_wake_word_detected:98 - ⚡ THOR awakened! Mock mode - simulating response
+2025-07-11 21:20:23.518 | INFO     | main:on_wake_word_detected:98 - ⚡ THOR awakened! Mock mode - simulating response
+2025-07-11 21:24:04.221 | INFO     | memory.memory_manager:__init__:55 - Memory Manager initialized
+2025-07-11 21:24:04.221 | INFO     | mind.semantic_memory:_load_persistent_memory:232 - Loaded 0 thoughts from persistent memory
+2025-07-11 21:24:04.221 | INFO     | mind.semantic_memory:__init__:99 - THOR MIND System initialized - consciousness awakening...
+2025-07-11 21:24:04.221 | INFO     | mind.marker_manager:_load_persistent_markers:216 - Loaded 11 markers and 0 anchors
+2025-07-11 21:24:04.221 | INFO     | mind.marker_manager:__init__:62 - THOR Marker Manager initialized
+2025-07-11 21:24:04.221 | INFO     | mind.proactive_assistant:__init__:104 - 🔍 THOR Proactive Assistant initialized - starting environment analysis
+2025-07-11 21:24:04.222 | INFO     | __main__:initialize_components:83 - Initializing THOR components...
+2025-07-11 21:24:04.222 | INFO     | wake_word:__init__:233 - Using Mock Wake Word Detector
+2025-07-11 21:24:04.222 | INFO     | audio_recorder:__init__:269 - Using Mock Audio Recorder
+2025-07-11 21:24:04.222 | INFO     | command_processor:__init__:531 - Using Mock Command Processor
+2025-07-11 21:24:04.222 | INFO     | enhanced_action_executor:__init__:313 - Using Mock Action Executor
+2025-07-11 21:24:04.222 | INFO     | tts_engine:__init__:327 - Using Mock TTS Engine (console output only)
+2025-07-11 21:24:04.222 | INFO     | __main__:initialize_components:92 - ✅ Mock components initialized
+2025-07-11 21:24:04.222 | INFO     | wake_word:start:238 - Mock wake word detector started - automatic activation in 3 seconds
+2025-07-11 21:24:04.222 | INFO     | __main__:run:108 - 🔨 THOR Agent ready (Mock Mode)
+2025-07-11 21:24:07.227 | INFO     | wake_word:auto_trigger:243 - Mock wake word triggered!
+2025-07-11 21:24:07.228 | INFO     | __main__:on_wake_word_detected:98 - ⚡ THOR awakened! Mock mode - simulating response
+2025-07-11 21:24:09.223 | INFO     | __main__:on_wake_word_detected:98 - ⚡ THOR awakened! Mock mode - simulating response
+2025-07-11 21:24:40.245 | INFO     | memory.memory_manager:__init__:55 - Memory Manager initialized
+2025-07-11 21:24:40.246 | INFO     | mind.semantic_memory:_load_persistent_memory:232 - Loaded 0 thoughts from persistent memory
+2025-07-11 21:24:40.246 | INFO     | mind.semantic_memory:__init__:99 - THOR MIND System initialized - consciousness awakening...
+2025-07-11 21:24:40.246 | INFO     | mind.marker_manager:_load_persistent_markers:216 - Loaded 11 markers and 0 anchors
+2025-07-11 21:24:40.246 | INFO     | mind.marker_manager:__init__:62 - THOR Marker Manager initialized
+2025-07-11 21:24:40.246 | INFO     | mind.proactive_assistant:__init__:104 - 🔍 THOR Proactive Assistant initialized - starting environment analysis
+2025-07-11 21:24:40.246 | INFO     | __main__:initialize_components:83 - Initializing THOR components...
+2025-07-11 21:24:40.246 | INFO     | wake_word:__init__:233 - Using Mock Wake Word Detector
+2025-07-11 21:24:40.246 | INFO     | audio_recorder:__init__:269 - Using Mock Audio Recorder
+2025-07-11 21:24:40.246 | INFO     | command_processor:__init__:531 - Using Mock Command Processor
+2025-07-11 21:24:40.246 | INFO     | enhanced_action_executor:__init__:313 - Using Mock Action Executor
+2025-07-11 21:24:40.246 | INFO     | tts_engine:__init__:327 - Using Mock TTS Engine (console output only)
+2025-07-11 21:24:40.246 | INFO     | __main__:initialize_components:92 - ✅ Mock components initialized
+2025-07-11 21:24:40.246 | INFO     | wake_word:start:238 - Mock wake word detector started - automatic activation in 3 seconds
+2025-07-11 21:24:40.246 | INFO     | __main__:run:108 - 🔨 THOR Agent ready (Mock Mode)
+2025-07-11 21:24:43.251 | INFO     | wake_word:auto_trigger:243 - Mock wake word triggered!
+2025-07-11 21:24:43.252 | INFO     | __main__:on_wake_word_detected:98 - ⚡ THOR awakened! Mock mode - simulating response
+2025-07-11 21:24:45.248 | INFO     | __main__:on_wake_word_detected:98 - ⚡ THOR awakened! Mock mode - simulating response
