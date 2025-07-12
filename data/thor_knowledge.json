@@ -1,0 +1,26 @@
+{
+  "deine_stimme_ist_groß": {
+    "task": "deine stimme ist groß",
+    "response": "❌ Anthropic API Key nicht gefunden. Bitte in .env setzen.",
+    "timestamp": "2025-07-12T02:28:36.076310",
+    "learned_patterns": []
+  },
+  "was_sind_deine_ki_powers_erzählen": {
+    "task": "was sind deine ki powers erzählen",
+    "response": "❌ Anthropic API Key nicht gefunden. Bitte in .env setzen.",
+    "timestamp": "2025-07-12T02:29:02.126315",
+    "learned_patterns": []
+  },
+  "was_ist": {
+    "task": "was ist",
+    "response": "❌ Anthropic API Key nicht gefunden. Bitte in .env setzen.",
+    "timestamp": "2025-07-12T02:29:29.511633",
+    "learned_patterns": []
+  },
+  "kannst_du_flirten": {
+    "task": "kannst du flirten",
+    "response": "❌ Anthropic API Key nicht gefunden. Bitte in .env setzen.",
+    "timestamp": "2025-07-12T02:32:02.067912",
+    "learned_patterns": []
+  }
+}

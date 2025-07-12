@@ -26,6 +26,7 @@ from file_organizer import FileOrganizer
 from emotion_engine import EmotionEngine
 from ai_assistant import AIAssistant
 from tool_system import ToolSystem
+from communication_analyzer import CommunicationAnalyzer
 from typing import Dict
 
 class ThorVoiceComplete:
@@ -67,6 +68,9 @@ class ThorVoiceComplete:
         
         # Tool-System
         self.tool_system = ToolSystem()
+        
+        # Kommunikations-Analyzer
+        self.communication_analyzer = CommunicationAnalyzer()
         
         # Kalibriere Mikrofon
         self._kalibriere_mikrofon()
@@ -423,8 +427,16 @@ class ThorVoiceComplete:
         self.speak("THOR wird heruntergefahren. Auf Wiedersehen!")
         
     def process_command(self, command: str):
-        """Verarbeite Befehl mit echten Aktionen, Emotionen und cooler Persönlichkeit"""
+        """Verarbeite Befehl mit echten Aktionen, Emotionen, cooler Persönlichkeit und Kommunikations-Analyse"""
         command_lower = command.lower()
+        
+        # NEUE FUNKTION: Analysiere Kommunikationsmuster ZUERST
+        comm_pattern = self.communication_analyzer.analyze_communication(command)
+        
+        if comm_pattern:
+            # Erkanntes Kommunikationsmuster - reagiere entsprechend
+            self.handle_communication_pattern(comm_pattern, command)
+            return
         
         # Setze Standard-Emotion auf selbstbewusst für coolere Antworten
         self.emotion_engine.set_emotion("selbstbewusst", 0.8, "default cool mode")
@@ -530,6 +542,46 @@ class ThorVoiceComplete:
             self.emotion_engine.set_emotion("selbstbewusst", 0.9, "complex challenge")
             self.handle_complex_task_with_ai_cool(command)
             
+    def handle_communication_pattern(self, pattern, original_command: str):
+        """Handle erkannte Kommunikationsmuster mit intelligenten Antworten"""
+        
+        # Hole angemessene Antwort
+        response, emotion, intensity = self.communication_analyzer.get_appropriate_response(pattern)
+        
+        # Setze entsprechende Emotion
+        self.emotion_engine.set_emotion(emotion, intensity, f"communication pattern: {pattern.pattern_type.value}")
+        
+        # Prüfe ob Grenzen gesetzt werden müssen
+        if self.communication_analyzer.should_set_boundaries(pattern):
+            # Erst Grenze setzen, dann normale Antwort
+            boundary_response = self.communication_analyzer.get_boundary_response(pattern)
+            self.speak(boundary_response)
+            
+            # Lenke zu praktischen Themen um
+            redirect_responses = [
+                "Aber hey, lass uns schauen was ich praktisch für dich tun kann! 😊",
+                "Anyway, womit kann ich dir heute helfen? 💪",
+                "So, back to business - was steht auf deiner To-Do-Liste? 😎",
+                "Genug geplaudert - was soll ich für dich rocken? 🚀"
+            ]
+            self.speak(random.choice(redirect_responses))
+            
+        else:
+            # Normale, angemessene Antwort
+            self.speak(response)
+            
+            # Füge Kommunikations-Insight hinzu (optional)
+            if pattern.confidence > 0.7:
+                insight = self.communication_analyzer.get_communication_insight(pattern)
+                if random.random() < 0.3:  # 30% Chance für Insight
+                    self.add_chat_message("💭 THOR Insight", insight)
+                    
+        # Logge erkanntes Muster (für Debugging)
+        self.add_chat_message(
+            "🔍 Pattern", 
+            f"Erkannt: {pattern.pattern_type.value} (Confidence: {pattern.confidence:.2f}, Risk: {pattern.risk_score})"
+        )
+        
     def get_all_capabilities_cool(self) -> str:
         """Hole alle verfügbaren Fähigkeiten mit cooler Attitude"""
         intro = "Oh Honey, fragst du ernsthaft was ich kann? Ich bin THOR - ich kann ALLES! Check das aus:"
@@ -542,7 +594,12 @@ class ThorVoiceComplete:
             "📝 Text-Ninja: Analysieren, Zählen - bin ich schneller als du denkst!",
             "🎯 Downloads-Queen: Aufräumen ist mein middle name!",
             "🧠 KI-Goddess: Claude als mein Sidekick für die harten Sachen!",
-            "😎 Emotional Intelligence: Ich fühl dich, Baby!"
+            "😎 Emotional Intelligence: Ich fühl dich, Baby!",
+            "🔍 Kommunikations-Expertin: Ich erkenne deine Absichten und reagiere angemessen!",
+            "💬 Flirt-Detector: Friendly Flirting? Okay! Zu direkt? Nope!",
+            "🤝 Connection-Master: Echte Verbindungen sind mir wichtig!",
+            "🛡️ Boundary-Queen: Ich setze Grenzen wie eine Profi!",
+            "🎭 Pattern-Recognition: Semantic Marker sind mein Spezialgebiet!"
         ]
         outro = "Also... was darf's denn sein? Ich bin ready to rock! 💥"
         return intro + "\n" + "\n".join(capabilities) + "\n" + outro
