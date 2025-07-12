@@ -232,6 +232,21 @@ THOR> t
 → "Organisiere meinen Desktop"
 ```
 
+## 📚 Phi-4 Lernumgebung
+
+Starte das Trainingsskript, um Phi‑4 Mini Reasoning gezielt auf deine
+Arbeitsweise einzustellen. THOR stellt dabei proaktiv Fragen und speichert
+alle Antworten im Memory-System. Im **Nachfrage-Modus** bekommt jede Antwort
+eine kurze Follow-up‑Frage, damit THOR dich noch besser kennenlernt.
+
+```bash
+source venv/bin/activate
+python src/phi_learning_env.py
+```
+
+Beende die Session jederzeit mit `exit`. Je mehr Feedback du gibst, desto
+schneller lernt THOR, wie er dir helfen kann.
+
 **THOR ist bereit, dein intelligenter, lernender Assistent zu werden!** 🔨⚡
 
 ---
