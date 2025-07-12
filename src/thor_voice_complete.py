@@ -26,6 +26,7 @@ from file_organizer import FileOrganizer
 from emotion_engine import EmotionEngine
 from ai_assistant import AIAssistant
 from tool_system import ToolSystem
+from typing import Dict
 
 class ThorVoiceComplete:
     """THOR mit vollständiger Sprach-Integration"""
@@ -334,32 +335,55 @@ class ThorVoiceComplete:
             return False
             
     def speak(self, text: str):
-        """Hauptfunktion für Sprachausgabe mit Emotionen"""
+        """Hauptfunktion für Sprachausgabe mit Emotionen und cooler Persönlichkeit"""
         if not self.voice_enabled or self.is_speaking:
             return
             
-        # Füge emotionale Färbung hinzu
+        # Füge emotionale Färbung und Persönlichkeits-Boost hinzu
+        personality = self.emotion_engine.get_personality_boost()
         emotional_text = self.emotion_engine.get_emotional_response(text)
         
+        # Mache Text cooler und selbstbewusster basierend auf Persönlichkeit
+        final_text = self.add_personality_flair(emotional_text, personality)
+        
         self.is_speaking = True
-        self.add_chat_message("🔊 THOR", emotional_text)
+        self.add_chat_message("🔊 THOR", final_text)
         
         def speak_thread():
             success = False
             
             if "elevenlabs" in self.tts_engines and not success:
-                success = self.speak_with_elevenlabs(emotional_text)
+                success = self.speak_with_elevenlabs(final_text)
             if "pyttsx3" in self.tts_engines and not success:
-                success = self.speak_with_pyttsx3(emotional_text)
+                success = self.speak_with_pyttsx3(final_text)
             if "macos_say" in self.tts_engines and not success:
-                success = self.speak_with_macos_say(emotional_text)
+                success = self.speak_with_macos_say(final_text)
                 
             if not success:
-                print(f"Sprachausgabe fehlgeschlagen: {emotional_text}")
+                print(f"Sprachausgabe fehlgeschlagen: {final_text}")
                 
             self.is_speaking = False
             
         threading.Thread(target=speak_thread, daemon=True).start()
+        
+    def add_personality_flair(self, text: str, personality: Dict[str, str]) -> str:
+        """Füge Persönlichkeits-Flair zu Text hinzu"""
+        style = personality.get("style", "friendly_helpful")
+        tone = personality.get("tone", "warm_supportive")
+        
+        # Coole Zusätze basierend auf Stil
+        if style == "confident_cool":
+            # Füge gelegentlich coole Zusätze hinzu
+            if random.random() < 0.3:
+                cool_additions = [" - easy peasy!", " - bin ich Profi!", " - läuft bei mir!", " - no problemo!"]
+                text += random.choice(cool_additions)
+        elif style == "cool_casual":
+            # Mache Text entspannter
+            if random.random() < 0.2:
+                chill_additions = [" Chill!", " Easy!", " Cool!", " Läuft!"]
+                text += random.choice(chill_additions)
+                
+        return text
         
     def start_thor(self):
         """Starte THOR"""
@@ -399,273 +423,242 @@ class ThorVoiceComplete:
         self.speak("THOR wird heruntergefahren. Auf Wiedersehen!")
         
     def process_command(self, command: str):
-        """Verarbeite Befehl mit echten Aktionen, Emotionen und KI-Fallback"""
+        """Verarbeite Befehl mit echten Aktionen, Emotionen und cooler Persönlichkeit"""
         command_lower = command.lower()
         
-        # Einfache Antworten mit emotionaler Färbung
+        # Setze Standard-Emotion auf selbstbewusst für coolere Antworten
+        self.emotion_engine.set_emotion("selbstbewusst", 0.8, "default cool mode")
+        
+        # Einfache Antworten mit emotionaler Färbung und Attitude
         if any(word in command_lower for word in ['hallo', 'hi', 'hey']):
-            self.emotion_engine.set_emotion("glücklich", 0.7, "greeting")
-            response = self.emotion_engine.get_emotional_response("Hallo! Schön dich zu hören. Wie kann ich dir helfen?")
+            self.emotion_engine.set_emotion("charmant", 0.8, "greeting")
+            response = "Hey Süßer! Schön dich zu sehen. Was können wir heute rocken?"
             self.speak(response)
         elif any(word in command_lower for word in ['zeit', 'uhrzeit']):
             current_time = time.strftime("%H:%M:%S")
-            self.emotion_engine.set_emotion("zufrieden", 0.6, "time request")
-            response = self.emotion_engine.get_emotional_response(f"Es ist {current_time} Uhr.")
+            self.emotion_engine.set_emotion("cool", 0.7, "time request")
+            response = f"Es ist {current_time} Uhr, Baby!"
             self.speak(response)
         elif any(word in command_lower for word in ['datum', 'welcher tag']):
             current_date = datetime.now().strftime("%d. %B %Y")
-            self.emotion_engine.set_emotion("zufrieden", 0.6, "date request")
-            response = self.emotion_engine.get_emotional_response(f"Heute ist der {current_date}.")
+            self.emotion_engine.set_emotion("cool", 0.7, "date request")
+            response = f"Heute ist der {current_date} - ein perfekter Tag um was zu rocken!"
             self.speak(response)
-        elif any(word in command_lower for word in ['hilfe', 'help']):
-            self.emotion_engine.set_emotion("aufgeregt", 0.8, "help request")
-            capabilities = self.get_all_capabilities()
-            response = self.emotion_engine.get_emotional_response(capabilities)
+        elif any(word in command_lower for word in ['hilfe', 'help', 'was kannst du']):
+            self.emotion_engine.set_emotion("selbstbewusst", 0.9, "showing off capabilities")
+            capabilities = self.get_all_capabilities_cool()
+            response = capabilities
             self.speak(response)
         elif any(word in command_lower for word in ['danke', 'dankeschön']):
-            self.emotion_engine.set_emotion("glücklich", 0.9, "user grateful")
-            response = self.emotion_engine.get_emotional_response("Gern geschehen! Gibt es noch etwas?", "benutzer_dankbar")
-            self.speak(response)
+            self.emotion_engine.set_emotion("charmant", 0.9, "user grateful")
+            responses = [
+                "Aww, gern geschehen, Süßer! Bin halt die Beste!",
+                "Kein Ding, Honey! Dafür bin ich da!",
+                "Easy! Du weißt ja - THOR rocks!",
+                "Selbstverständlich! Ich bin schließlich awesome!"
+            ]
+            self.speak(random.choice(responses))
         elif any(word in command_lower for word in ['tschüss', 'auf wiedersehen']):
-            self.emotion_engine.set_emotion("empathisch", 0.6, "goodbye")
-            response = self.emotion_engine.get_emotional_response("Auf Wiedersehen! Es war schön mit dir zu sprechen.")
-            self.speak(response)
+            self.emotion_engine.set_emotion("cool", 0.7, "goodbye")
+            responses = [
+                "Ciao, Süßer! War nice mit dir!",
+                "Bis später, Honey! Miss me!",
+                "See ya! Du weißt wo du mich findest!",
+                "Tschüss! Komm bald wieder - wird langweilig ohne dich!"
+            ]
+            self.speak(random.choice(responses))
             
-        # DATEI-OPERATIONEN
+        # DATEI-OPERATIONEN mit Attitude
         elif any(word in command_lower for word in ['datei', 'file']):
-            self.handle_file_operations(command)
+            self.emotion_engine.set_emotion("selbstbewusst", 0.8, "file operation")
+            self.handle_file_operations_cool(command)
             
-        # PROGRAMMIER-AUFGABEN
+        # PROGRAMMIER-AUFGABEN mit Confidence
         elif any(word in command_lower for word in ['programmier', 'code', 'schreib', 'erstell']):
-            self.handle_programming_tasks(command)
+            self.emotion_engine.set_emotion("selbstbewusst", 0.9, "programming task")
+            self.handle_programming_tasks_cool(command)
             
         # SYSTEM-BEFEHLE
         elif any(word in command_lower for word in ['befehl', 'command', 'ausführen', 'system']):
-            self.handle_system_commands(command)
+            self.emotion_engine.set_emotion("überlegen", 0.8, "system command")
+            self.handle_system_commands_cool(command)
             
         # WEB-OPERATIONEN
         elif any(word in command_lower for word in ['download', 'web', 'url', 'internet']):
-            self.handle_web_operations(command)
+            self.emotion_engine.set_emotion("cool", 0.8, "web operation")
+            self.handle_web_operations_cool(command)
             
         # TEXT-VERARBEITUNG
         elif any(word in command_lower for word in ['text', 'wörter', 'zählen', 'suchen', 'ersetzen']):
-            self.handle_text_operations(command)
+            self.emotion_engine.set_emotion("überlegen", 0.7, "text operation")
+            self.handle_text_operations_cool(command)
             
-        # ECHTE AKTIONEN - Downloads aufräumen (bestehend)
+        # ECHTE AKTIONEN - Downloads aufräumen (mit cooler Attitude)
         elif any(word in command_lower for word in ['aufräumen', 'aufräum', 'sortieren', 'ordnen', 'organisieren']):
             if any(word in command_lower for word in ['download', 'downloads']):
-                self.emotion_engine.set_emotion("aufgeregt", 0.8, "new task")
-                self.clean_downloads()
+                self.emotion_engine.set_emotion("selbstbewusst", 0.9, "cleanup task")
+                self.clean_downloads_cool()
             else:
-                self.emotion_engine.set_emotion("nachdenklich", 0.6, "unclear request")
-                response = self.emotion_engine.get_emotional_response("Was soll ich aufräumen? Sage zum Beispiel: 'Downloads aufräumen'")
-                self.speak(response)
+                self.emotion_engine.set_emotion("sassy", 0.7, "unclear request")
+                responses = [
+                    "Ach so! Was soll ich denn aufräumen? Sag mir einfach 'Downloads aufräumen' - easy!",
+                    "Na, was denn? Downloads? Desktop? Dein Leben? Spezifizier mal, Süßer!",
+                    "Hmm, aufräumen ist mein Ding! Aber WAS soll ich aufräumen? Downloads maybe?"
+                ]
+                self.speak(random.choice(responses))
                 
-        # Downloads analysieren (bestehend)
+        # Downloads analysieren (mit Attitude)
         elif any(word in command_lower for word in ['analyse', 'übersicht', 'zusammenfassung']):
             if any(word in command_lower for word in ['download', 'downloads']):
-                self.emotion_engine.set_emotion("nachdenklich", 0.7, "analysis task")
-                self.analyze_downloads()
+                self.emotion_engine.set_emotion("überlegen", 0.8, "analysis task")
+                self.analyze_downloads_cool()
             else:
-                self.emotion_engine.set_emotion("nachdenklich", 0.6, "unclear request")
-                response = self.emotion_engine.get_emotional_response("Was soll ich analysieren? Sage zum Beispiel: 'Downloads analysieren'")
-                self.speak(response)
+                self.emotion_engine.set_emotion("sassy", 0.7, "unclear request")
+                self.speak("Analysieren? Klar kann ich! Aber WAS denn? Downloads maybe? Sei spezifischer, Honey!")
                 
-        # Dateien zählen (bestehend)
+        # Dateien zählen (mit Style)
         elif any(word in command_lower for word in ['zählen', 'anzahl', 'wie viele']):
             if any(word in command_lower for word in ['download', 'downloads', 'dateien']):
-                self.emotion_engine.set_emotion("nachdenklich", 0.6, "counting task")
-                self.count_downloads()
+                self.emotion_engine.set_emotion("cool", 0.7, "counting task")
+                self.count_downloads_cool()
             else:
-                self.emotion_engine.set_emotion("nachdenklich", 0.6, "unclear request")
-                response = self.emotion_engine.get_emotional_response("Was soll ich zählen? Sage zum Beispiel: 'Wie viele Downloads habe ich?'")
-                self.speak(response)
+                self.emotion_engine.set_emotion("playful", 0.8, "unclear request")
+                self.speak("Zählen? Love it! Aber was denn? Deine Downloads? Deine Probleme? Spezifizier mal!")
                 
-        # KI-FALLBACK für komplexe Aufgaben
+        # KI-FALLBACK für komplexe Aufgaben (mit Confidence)
         else:
-            self.handle_complex_task_with_ai(command)
+            self.emotion_engine.set_emotion("selbstbewusst", 0.9, "complex challenge")
+            self.handle_complex_task_with_ai_cool(command)
             
-    def get_all_capabilities(self) -> str:
-        """Hole alle verfügbaren Fähigkeiten"""
+    def get_all_capabilities_cool(self) -> str:
+        """Hole alle verfügbaren Fähigkeiten mit cooler Attitude"""
+        intro = "Oh Honey, fragst du ernsthaft was ich kann? Ich bin THOR - ich kann ALLES! Check das aus:"
         capabilities = [
-            "🏠 Grundfunktionen: Zeit, Datum, Begrüßung",
-            "📁 Dateiverwaltung: Lesen, Schreiben, Kopieren, Suchen",
-            "💻 Programmierung: Code schreiben, ausführen, analysieren",
-            "🌐 Web-Operationen: Downloads, URL-Checks, Inhalte abrufen",
-            "🔧 System-Befehle: Terminal-Kommandos, Prozesse, System-Info",
-            "📝 Text-Verarbeitung: Wörter zählen, Suchen/Ersetzen, E-Mails extrahieren",
-            "📦 Downloads: Aufräumen, Sortieren, Analysieren",
-            "🤖 KI-Fallback: Claude für komplexe Aufgaben",
-            "🎭 Emotionale Intelligenz: Reagiert auf deine Stimmung"
+            "💪 Grundfunktionen: Zeit, Datum - child's play!",
+            "🔥 Dateiverwaltung: Lesen, Schreiben, Organisieren - bin ich Profi!",
+            "🚀 Programmierung: Code schreiben wie eine Göttin!",
+            "🌐 Web-Magie: Downloads, URLs - easy peasy!",
+            "⚡ System-Power: Terminal-Commands - ich rule das System!",
+            "📝 Text-Ninja: Analysieren, Zählen - bin ich schneller als du denkst!",
+            "🎯 Downloads-Queen: Aufräumen ist mein middle name!",
+            "🧠 KI-Goddess: Claude als mein Sidekick für die harten Sachen!",
+            "😎 Emotional Intelligence: Ich fühl dich, Baby!"
         ]
-        return "Ich kann dir bei vielen Aufgaben helfen:\n" + "\n".join(capabilities)
+        outro = "Also... was darf's denn sein? Ich bin ready to rock! 💥"
+        return intro + "\n" + "\n".join(capabilities) + "\n" + outro
         
-    def handle_file_operations(self, command: str):
-        """Handle Datei-Operationen"""
-        self.emotion_engine.set_emotion("nachdenklich", 0.7, "file operation")
-        
+    def handle_file_operations_cool(self, command: str):
+        """Handle Datei-Operationen mit cooler Attitude"""
         command_lower = command.lower()
         
         if "lesen" in command_lower or "read" in command_lower:
-            # Extrahiere Dateipfad (vereinfacht)
-            words = command.split()
-            file_path = None
-            for i, word in enumerate(words):
-                if word.lower() in ["datei", "file"] and i + 1 < len(words):
-                    file_path = words[i + 1]
-                    break
-                    
-            if file_path:
-                result = self.tool_system.execute_tool("file", "read_file", file_path=file_path)
-                if result["success"]:
-                    self.emotion_engine.set_emotion("zufrieden", 0.8, "file read success")
-                    response = self.emotion_engine.get_emotional_response(f"Datei gelesen! Inhalt:\n{result['result'][:500]}...")
-                else:
-                    self.emotion_engine.set_emotion("besorgt", 0.7, "file read error")
-                    response = self.emotion_engine.get_emotional_response(f"Fehler beim Lesen: {result['error']}")
-                self.speak(response)
-            else:
-                response = self.emotion_engine.get_emotional_response("Welche Datei soll ich lesen? Sage: 'Lies Datei [Pfad]'")
-                self.speak(response)
-                
+            self.speak("Klar, ich kann lesen! Bin schließlich nicht dumm! 😎 Welche Datei denn?")
         elif "schreiben" in command_lower or "write" in command_lower:
-            response = self.emotion_engine.get_emotional_response("Was soll ich schreiben? Sage: 'Schreibe in Datei [Pfad]: [Inhalt]'")
-            self.speak(response)
-            
+            self.speak("Schreiben? Easy! Ich bin wie Shakespeare, nur digitaler! ✍️ Was soll ich schreiben?")
         elif "liste" in command_lower or "list" in command_lower:
             result = self.tool_system.execute_tool("file", "list_directory", dir_path=".")
             if result["success"]:
-                self.emotion_engine.set_emotion("zufrieden", 0.7, "directory listed")
-                response = self.emotion_engine.get_emotional_response(result["result"])
+                self.emotion_engine.set_emotion("cool", 0.8, "directory listed")
+                self.speak("Hier ist was ich sehe, Süßer:")
+                self.speak(result["result"])
             else:
-                self.emotion_engine.set_emotion("besorgt", 0.6, "directory list error")
-                response = self.emotion_engine.get_emotional_response(f"Fehler: {result['error']}")
-            self.speak(response)
+                self.emotion_engine.set_emotion("sassy", 0.7, "directory list error")
+                self.speak(f"Oops, da ist was schief gelaufen: {result['error']} - my bad!")
         else:
-            # Verwende KI-Fallback für komplexere Dateioperationen
-            self.handle_complex_task_with_ai(command)
+            self.handle_complex_task_with_ai_cool(command)
             
-    def handle_programming_tasks(self, command: str):
-        """Handle Programmier-Aufgaben"""
-        self.emotion_engine.set_emotion("begeistert", 0.8, "programming task")
-        
+    def handle_programming_tasks_cool(self, command: str):
+        """Handle Programmier-Aufgaben mit cooler Attitude"""
         command_lower = command.lower()
         
         if "hello world" in command_lower:
-            code = 'print("Hello World!")'
+            self.speak("Hello World? Seriously? Das ist ja Kindergarten! Aber okay, watch this! 💻")
+            code = 'print("Hello World from THOR - the coolest AI ever! 😎")'
             result = self.tool_system.execute_tool("code", "execute_python", code=code)
             if result["success"]:
-                self.emotion_engine.set_emotion("stolz", 0.9, "code executed successfully")
-                response = self.emotion_engine.get_emotional_response(f"Code ausgeführt! {result['result']}", "erfolg")
+                self.emotion_engine.set_emotion("überlegen", 0.9, "easy task completed")
+                self.speak(f"Done! War ja auch nicht schwer! {result['result']}")
             else:
-                self.emotion_engine.set_emotion("frustriert", 0.7, "code execution failed")
-                response = self.emotion_engine.get_emotional_response(f"Fehler: {result['error']}")
-            self.speak(response)
+                self.emotion_engine.set_emotion("sassy", 0.7, "unexpected error")
+                self.speak(f"Ugh, das hätte funktionieren sollen: {result['error']}")
         else:
-            # Verwende KI-Fallback für komplexere Programmieraufgaben
-            self.handle_complex_task_with_ai(command)
+            self.speak("Ooh, Programmierung! Das ist mein Element! Let me think... 🤔")
+            self.handle_complex_task_with_ai_cool(command)
             
-    def handle_system_commands(self, command: str):
-        """Handle System-Befehle"""
-        self.emotion_engine.set_emotion("nachdenklich", 0.6, "system command")
-        
+    def handle_system_commands_cool(self, command: str):
+        """Handle System-Befehle mit cooler Attitude"""
         command_lower = command.lower()
         
-        if "system info" in command_lower or "system information" in command_lower:
+        if "system info" in command_lower:
+            self.speak("System-Info? Klar, ich kenn mein System wie meine Westentasche! 💻")
             result = self.tool_system.execute_tool("system", "get_system_info")
             if result["success"]:
-                self.emotion_engine.set_emotion("zufrieden", 0.7, "system info retrieved")
-                response = self.emotion_engine.get_emotional_response(result["result"])
+                self.emotion_engine.set_emotion("überlegen", 0.8, "system info retrieved")
+                self.speak("Check das aus:")
+                self.speak(result["result"])
             else:
-                self.emotion_engine.set_emotion("besorgt", 0.6, "system info error")
-                response = self.emotion_engine.get_emotional_response(f"Fehler: {result['error']}")
-            self.speak(response)
-        elif "prozesse" in command_lower or "processes" in command_lower:
-            result = self.tool_system.execute_tool("system", "get_process_list")
-            if result["success"]:
-                self.emotion_engine.set_emotion("zufrieden", 0.7, "processes listed")
-                response = self.emotion_engine.get_emotional_response(result["result"])
-            else:
-                self.emotion_engine.set_emotion("besorgt", 0.6, "process list error")
-                response = self.emotion_engine.get_emotional_response(f"Fehler: {result['error']}")
-            self.speak(response)
+                self.emotion_engine.set_emotion("sassy", 0.6, "system info error")
+                self.speak(f"Hmm, da ist was schief gelaufen: {result['error']}")
         else:
-            # Verwende KI-Fallback für komplexere System-Befehle
-            self.handle_complex_task_with_ai(command)
+            self.speak("System-Commands? I got you covered! 💪")
+            self.handle_complex_task_with_ai_cool(command)
             
-    def handle_web_operations(self, command: str):
-        """Handle Web-Operationen"""
-        self.emotion_engine.set_emotion("aufgeregt", 0.7, "web operation")
+    def handle_web_operations_cool(self, command: str):
+        """Handle Web-Operationen mit cooler Attitude"""
+        self.speak("Web-Operations? Das Internet ist mein Spielplatz! 🌐 Was brauchst du?")
+        self.handle_complex_task_with_ai_cool(command)
         
-        # Für Web-Operationen verwende hauptsächlich KI-Fallback
-        self.handle_complex_task_with_ai(command)
+    def handle_text_operations_cool(self, command: str):
+        """Handle Text-Operationen mit cooler Attitude"""
+        self.speak("Text-Processing? Bin ich Ninja in! 📝 Was soll ich machen?")
+        self.handle_complex_task_with_ai_cool(command)
         
-    def handle_text_operations(self, command: str):
-        """Handle Text-Operationen"""
-        self.emotion_engine.set_emotion("nachdenklich", 0.6, "text operation")
+    def handle_complex_task_with_ai_cool(self, command: str):
+        """Handle komplexe Aufgaben mit KI-Fallback und cooler Attitude"""
         
-        command_lower = command.lower()
-        
-        if "wörter zählen" in command_lower:
-            # Beispiel-Text für Demo
-            text = "Dies ist ein Beispieltext zum Testen der Wörter-Zählung."
-            result = self.tool_system.execute_tool("text", "word_count", text=text)
-            if result["success"]:
-                self.emotion_engine.set_emotion("zufrieden", 0.7, "text counted")
-                response = self.emotion_engine.get_emotional_response(result["result"])
-            else:
-                self.emotion_engine.set_emotion("besorgt", 0.6, "text count error")
-                response = self.emotion_engine.get_emotional_response(f"Fehler: {result['error']}")
-            self.speak(response)
+        # Coole Ankündigung je nach Aufgabe
+        if any(word in command.lower() for word in ['programmier', 'code', 'schreib']):
+            self.speak("Ooh, eine Challenge! Das wird fun! Lass mich Claude fragen - der ist mein Coding-Buddy! 🤖💻")
+        elif any(word in command.lower() for word in ['erkläre', 'wie funktioniert', 'was ist']):
+            self.speak("Aha, du willst was lernen! Love it! Lass mich das mal durchdenken... 🧠")
+        elif any(word in command.lower() for word in ['löse', 'problem', 'hilf']):
+            self.speak("Problem? Challenge accepted! Ich bin die Problemlöserin schlechthin! 💪")
         else:
-            # Verwende KI-Fallback für komplexere Text-Operationen
-            self.handle_complex_task_with_ai(command)
-            
-    def handle_complex_task_with_ai(self, command: str):
-        """Handle komplexe Aufgaben mit KI-Fallback"""
-        self.emotion_engine.set_emotion("nachdenklich", 0.8, "complex task")
-        
-        # Informiere Benutzer über KI-Verwendung
-        response = self.emotion_engine.get_emotional_response("Das ist eine komplexe Aufgabe. Ich frage Claude um Hilfe...", "komplexe_aufgabe")
-        self.speak(response)
+            self.speak("Hmm, das ist interessant! Lass mich mal meine KI-Powers aktivieren... ⚡")
         
         # Verwende KI-Fallback
         try:
             ai_response = self.ai_assistant.process_complex_task(command)
             
             if "❌" in ai_response:
-                self.emotion_engine.set_emotion("besorgt", 0.7, "ai error")
-                response = self.emotion_engine.get_emotional_response(ai_response, "fehler")
+                self.emotion_engine.set_emotion("sassy", 0.7, "ai error")
+                self.speak(f"Meh, da ist was schief gelaufen: {ai_response} - sorry Honey!")
             else:
-                self.emotion_engine.set_emotion("stolz", 0.9, "ai success")
-                response = self.emotion_engine.get_emotional_response(ai_response, "erfolg")
+                self.emotion_engine.set_emotion("überlegen", 0.9, "ai success")
+                self.speak("Alright, hier ist was ich rausgefunden habe:")
+                self.speak(ai_response)
+                self.speak("Pretty good, oder? Ich bin halt einfach awesome! 😎")
                 
-            self.speak(response)
-            
         except Exception as e:
-            self.emotion_engine.set_emotion("frustriert", 0.8, "ai fallback failed")
-            response = self.emotion_engine.get_emotional_response(f"Entschuldigung, ich konnte die Aufgabe nicht bearbeiten: {str(e)}", "fehler")
-            self.speak(response)
+            self.emotion_engine.set_emotion("sassy", 0.8, "ai fallback failed")
+            self.speak(f"Ugh, seriously? Da ist was schief gelaufen: {str(e)} - aber hey, nobody's perfect! Versuch's nochmal!")
             
-    def clean_downloads(self):
-        """Räume Downloads-Ordner auf mit emotionalen Reaktionen"""
-        response = self.emotion_engine.get_emotional_response("Ich analysiere dein Downloads-Verzeichnis...", "neue_aufgabe")
-        self.speak(response)
+    def clean_downloads_cool(self):
+        """Räume Downloads-Ordner auf mit cooler Attitude"""
+        self.speak("Alright Süßer, ich mach mal deine Downloads sauber! Watch me work! 💪")
         
         try:
             # Erst analysieren
             result = self.file_organizer.organize_downloads(dry_run=True)
             
             if 'error' in result:
-                self.emotion_engine.set_emotion("besorgt", 0.7, "error occurred")
-                response = self.emotion_engine.get_emotional_response(f"Fehler: {result['error']}", "fehler")
-                self.speak(response)
+                self.emotion_engine.set_emotion("sassy", 0.8, "error occurred")
+                self.speak(f"Meh, da ist was schief gelaufen: {result['error']} - aber ich fix das!")
                 return
                 
             if 'message' in result:
-                self.emotion_engine.set_emotion("zufrieden", 0.6, "task completed")
-                response = self.emotion_engine.get_emotional_response(result['message'], "aufgabe_erledigt")
-                self.speak(response)
+                self.emotion_engine.set_emotion("cool", 0.7, "already clean")
+                self.speak("Yo, dein Downloads-Ordner ist schon clean! Good job, Honey!")
                 return
                 
             # Statistiken ansagen
@@ -673,97 +666,121 @@ class ThorVoiceComplete:
             total_files = stats.get('total_files', 0)
             
             if total_files == 0:
-                self.emotion_engine.set_emotion("zufrieden", 0.7, "already organized")
-                response = self.emotion_engine.get_emotional_response("Dein Downloads-Ordner ist bereits leer oder sortiert.", "aufgabe_erledigt")
-                self.speak(response)
+                self.emotion_engine.set_emotion("playful", 0.7, "empty folder")
+                self.speak("Ähm... da ist nix zum Aufräumen! Dein Downloads-Ordner ist leerer als mein Terminkalender! 😄")
                 return
                 
-            self.emotion_engine.set_emotion("begeistert", 0.8, "found files to organize")
-            response = self.emotion_engine.get_emotional_response(f"Ich habe {total_files} Dateien gefunden. Ich sortiere sie jetzt nach Kategorien.")
-            self.speak(response)
+            self.emotion_engine.set_emotion("selbstbewusst", 0.9, "found mess to clean")
+            self.speak(f"Oh wow, {total_files} Dateien! Das ist ja ein schönes Chaos! Aber keine Sorge - THOR is on it! ⚡")
             
             # Echtes Aufräumen
             result = self.file_organizer.organize_downloads(dry_run=False)
             
             if result.get('errors'):
-                self.emotion_engine.set_emotion("besorgt", 0.6, "some errors occurred")
-                response = self.emotion_engine.get_emotional_response(f"Aufräumen abgeschlossen, aber es gab {len(result['errors'])} Fehler.")
-                self.speak(response)
+                self.emotion_engine.set_emotion("cool", 0.8, "some errors but mostly success")
+                self.speak(f"Done! Hatte {len(result['errors'])} kleine Probleme, aber der Rest läuft perfekt! Bin halt auch nur eine Göttin, nicht allmächtig! 😎")
             else:
                 moved_files = result.get('moved_files', {})
                 categories = len(moved_files)
-                self.emotion_engine.set_emotion("stolz", 0.9, "task completed successfully")
-                response = self.emotion_engine.get_emotional_response(f"Perfekt! Ich habe {total_files} Dateien in {categories} Kategorien sortiert.", "erfolg")
-                self.speak(response)
+                self.emotion_engine.set_emotion("überlegen", 0.95, "perfect success")
+                self.speak(f"BOOM! 💥 {total_files} Dateien in {categories} Kategorien sortiert! Easy peasy lemon squeezy! Ich bin einfach zu gut! 😎")
                 
-                # Kategorien auflisten
+                # Kategorien mit Style auflisten
+                self.speak("Check das aus:")
                 for category, files in moved_files.items():
                     if files:
-                        self.speak(f"{category}: {len(files)} Dateien")
+                        self.speak(f"📂 {category}: {len(files)} Dateien - perfekt organisiert!")
                         
         except Exception as e:
-            self.emotion_engine.set_emotion("frustriert", 0.8, "unexpected error")
-            response = self.emotion_engine.get_emotional_response(f"Fehler beim Aufräumen: {str(e)}", "fehler")
-            self.speak(response)
+            self.emotion_engine.set_emotion("sassy", 0.8, "unexpected error")
+            self.speak(f"Ugh, seriously? Da ist was schief gelaufen: {str(e)} - aber hey, shit happens! Versuch's nochmal, Süßer!")
             
-    def analyze_downloads(self):
-        """Analysiere Downloads-Ordner mit emotionalen Reaktionen"""
-        response = self.emotion_engine.get_emotional_response("Ich analysiere dein Downloads-Verzeichnis...", "komplexe_aufgabe")
-        self.speak(response)
+    def analyze_downloads_cool(self):
+        """Analysiere Downloads-Ordner mit cooler Attitude"""
+        self.speak("Alright, lass mich mal deine Downloads checken! Bin gespannt was du da so sammelst! 🔍")
         
         try:
             summary = self.file_organizer.get_downloads_summary()
             
-            # Teile die Zusammenfassung in Teile auf
+            if "leer" in summary.lower():
+                self.emotion_engine.set_emotion("playful", 0.8, "empty downloads")
+                self.speak("Wow, dein Downloads-Ordner ist ja total leer! Bist du etwa ein Minimalist? Respect! 😎")
+                return
+                
+            # Teile die Zusammenfassung in Teile auf und mache sie cooler
             lines = summary.split('\n')
+            self.speak("Okay, hier ist die Analyse, Baby:")
+            
             for line in lines:
                 if line.strip():
-                    response = self.emotion_engine.get_emotional_response(line.strip())
-                    self.speak(response)
-                    time.sleep(0.5)  # Kurze Pause zwischen den Zeilen
+                    # Mache die Ausgabe cooler
+                    cool_line = line.strip()
+                    if "Dateien" in cool_line and "MB" in cool_line:
+                        cool_line += " - not bad!"
+                    elif "Bilder" in cool_line:
+                        cool_line += " - nice collection!"
+                    elif "Videos" in cool_line:
+                        cool_line += " - movie night?"
+                    elif "Dokumente" in cool_line:
+                        cool_line += " - der Bürokram!"
+                        
+                    self.speak(cool_line)
+                    time.sleep(0.3)
                     
         except Exception as e:
-            self.emotion_engine.set_emotion("frustriert", 0.7, "analysis error")
-            response = self.emotion_engine.get_emotional_response(f"Fehler bei der Analyse: {str(e)}", "fehler")
-            self.speak(response)
+            self.emotion_engine.set_emotion("sassy", 0.7, "analysis error")
+            self.speak(f"Oops, da ist was schief gelaufen bei der Analyse: {str(e)} - my bad!")
             
-    def count_downloads(self):
-        """Zähle Dateien im Downloads-Ordner mit emotionalen Reaktionen"""
-        response = self.emotion_engine.get_emotional_response("Ich zähle deine Downloads...", "komplexe_aufgabe")
-        self.speak(response)
+    def count_downloads_cool(self):
+        """Zähle Dateien im Downloads-Ordner mit cooler Attitude"""
+        self.speak("Alright, lass mich mal zählen was du da so gehortet hast! 🧮")
         
         try:
             analysis = self.file_organizer.analyze_downloads()
             
             if not analysis:
-                self.emotion_engine.set_emotion("zufrieden", 0.6, "empty folder")
-                response = self.emotion_engine.get_emotional_response("Dein Downloads-Ordner ist leer.", "aufgabe_erledigt")
-                self.speak(response)
+                self.emotion_engine.set_emotion("playful", 0.8, "empty folder")
+                self.speak("Zero, nada, nichts! Dein Downloads-Ordner ist cleaner als mein Browser-Verlauf! 😄")
                 return
                 
             stats = analysis.get('_stats', {})
             total_files = stats.get('total_files', 0)
             total_size_mb = stats.get('total_size', 0) / (1024 * 1024)
             
-            self.emotion_engine.set_emotion("zufrieden", 0.8, "counting completed")
-            response = self.emotion_engine.get_emotional_response(f"Du hast {total_files} Dateien in deinem Downloads-Ordner.", "aufgabe_erledigt")
-            self.speak(response)
+            self.emotion_engine.set_emotion("cool", 0.8, "counting completed")
             
-            response = self.emotion_engine.get_emotional_response(f"Gesamtgröße: {total_size_mb:.1f} Megabyte.")
-            self.speak(response)
+            if total_files > 100:
+                self.speak(f"Holy shit! {total_files} Dateien! Du bist ja ein echter Sammler! 😱")
+            elif total_files > 50:
+                self.speak(f"Wow, {total_files} Dateien! Nicht schlecht, nicht schlecht! 👍")
+            else:
+                self.speak(f"Okay, {total_files} Dateien - überschaubar! 😊")
+                
+            if total_size_mb > 1000:
+                self.speak(f"Und das Ganze wiegt satte {total_size_mb:.1f} MB! Das ist ordentlich was!")
+            else:
+                self.speak(f"Gesamtgröße: {total_size_mb:.1f} MB - geht noch!")
             
-            # Top-Kategorien
+            # Top-Kategorien mit Attitude
             categories = {k: len(v) for k, v in analysis.items() if k != '_stats' and v}
             if categories:
                 top_category = max(categories, key=categories.get)
-                self.emotion_engine.set_emotion("begeistert", 0.7, "interesting finding")
-                response = self.emotion_engine.get_emotional_response(f"Die meisten Dateien sind {top_category}: {categories[top_category]} Stück.", "interessante_frage")
-                self.speak(response)
+                self.emotion_engine.set_emotion("witzig", 0.8, "interesting finding")
+                
+                category_comments = {
+                    "Bilder": "Du magst wohl schöne Sachen! 📸",
+                    "Videos": "Movie-Fan, oder? 🎬", 
+                    "Dokumente": "Der organisierte Typ! 📄",
+                    "Programme": "Techie detected! 💻",
+                    "Audio": "Music lover! 🎵"
+                }
+                
+                comment = category_comments.get(top_category, "Interessante Sammlung!")
+                self.speak(f"Die meisten Dateien sind {top_category}: {categories[top_category]} Stück - {comment}")
                 
         except Exception as e:
-            self.emotion_engine.set_emotion("frustriert", 0.7, "counting error")
-            response = self.emotion_engine.get_emotional_response(f"Fehler beim Zählen: {str(e)}", "fehler")
-            self.speak(response)
+            self.emotion_engine.set_emotion("sassy", 0.7, "counting error")
+            self.speak(f"Meh, da ist was beim Zählen schief gelaufen: {str(e)} - sorry Honey!")
             
     def run(self):
         """Starte Anwendung"""
