@@ -224,7 +224,7 @@ class ThorVoiceComplete:
         """Lauscht einmal"""
         try:
             with self.microphone as source:
-                audio = self.recognizer.listen(source, timeout=1, phrase_time_limit=5)
+                audio = self.recognizer.listen(source, timeout=1, phrase_time_limit=15)
             text = self.recognizer.recognize_google(audio, language='de-DE')
             return text
         except:
@@ -543,44 +543,106 @@ class ThorVoiceComplete:
             self.handle_complex_task_with_ai_cool(command)
             
     def handle_communication_pattern(self, pattern, original_command: str):
-        """Handle erkannte Kommunikationsmuster mit intelligenten Antworten"""
+        """Handle erkannte Kommunikationsmuster mit erweiterten semantischen Markern und intelligenten Antworten"""
         
-        # Hole angemessene Antwort
-        response, emotion, intensity = self.communication_analyzer.get_appropriate_response(pattern)
+        # Verwende erweiterte emotionale Analyse
+        emotional_analysis = self.communication_analyzer.analyze_emotional_dynamics(original_command)
         
-        # Setze entsprechende Emotion
-        self.emotion_engine.set_emotion(emotion, intensity, f"communication pattern: {pattern.pattern_type.value}")
+        # Setze Emotion basierend auf erkanntem Pattern und emotionalem Impact
+        emotion = emotional_analysis.get("emotion", "neutral")
+        intensity = emotional_analysis.get("intensity", 0.5)
+        emotional_state = emotional_analysis.get("emotional_state", "neutral")
+        
+        # Lasse EmotionEngine auf Kommunikationsmuster reagieren
+        emotion_response = self.emotion_engine.react_to_communication_pattern(
+            pattern.pattern_type.value, 
+            pattern.confidence, 
+            pattern.emotional_impact
+        )
+        
+        # Passe Antwort basierend auf Risiko-Level an
+        base_response = emotional_analysis.get("suggested_response", "Interessant!")
+        final_response = self.emotion_engine.adjust_response_for_risk_level(base_response, pattern.risk_score)
         
         # Prüfe ob Grenzen gesetzt werden müssen
-        if self.communication_analyzer.should_set_boundaries(pattern):
-            # Erst Grenze setzen, dann normale Antwort
-            boundary_response = self.communication_analyzer.get_boundary_response(pattern)
+        risk_assessment = emotional_analysis.get("risk_assessment", {})
+        if risk_assessment.get("should_set_boundaries", False):
+            # Erst Grenze setzen
+            boundary_response = risk_assessment.get("boundary_response", "Lass uns das entspannter angehen!")
             self.speak(boundary_response)
             
-            # Lenke zu praktischen Themen um
-            redirect_responses = [
-                "Aber hey, lass uns schauen was ich praktisch für dich tun kann! 😊",
-                "Anyway, womit kann ich dir heute helfen? 💪",
-                "So, back to business - was steht auf deiner To-Do-Liste? 😎",
-                "Genug geplaudert - was soll ich für dich rocken? 🚀"
-            ]
-            self.speak(random.choice(redirect_responses))
+            # Emotionale Reaktion je nach Pattern-Typ
+            if pattern.pattern_type.value in ["love_bombing", "future_faking"]:
+                self.emotion_engine.set_emotion("protective", 0.9, "protecting user from manipulation")
+                follow_up = "Lass uns lieber bei realistischen Dingen bleiben! Was kann ich praktisch für dich tun? 😊"
+            elif pattern.pattern_type.value in ["emotional_gaslighting", "social_isolation"]:
+                self.emotion_engine.set_emotion("protective", 0.95, "strong boundary needed")
+                follow_up = "So nicht! Ich bin für respektvolle Kommunikation da! Was brauchst du wirklich? 💪"
+            elif pattern.pattern_type.value in ["mirror_pacing", "resonance_matching"]:
+                self.emotion_engine.set_emotion("suspicious", 0.8, "detecting manipulation")
+                follow_up = "Lass uns authentisch bleiben! Was ist dein echtes Anliegen? 🤔"
+            else:
+                follow_up = random.choice([
+                    "Aber hey, lass uns schauen was ich praktisch für dich tun kann! 😊",
+                    "Anyway, womit kann ich dir heute helfen? 💪",
+                    "So, back to business - was steht auf deiner To-Do-Liste? 😎",
+                    "Genug geplaudert - was soll ich für dich rocken? 🚀"
+                ])
+            
+            self.speak(follow_up)
             
         else:
-            # Normale, angemessene Antwort
-            self.speak(response)
-            
-            # Füge Kommunikations-Insight hinzu (optional)
-            if pattern.confidence > 0.7:
-                insight = self.communication_analyzer.get_communication_insight(pattern)
-                if random.random() < 0.3:  # 30% Chance für Insight
+            # Positive Reaktion auf gesunde Kommunikationsmuster
+            if pattern.pattern_type.value == "self_reflection":
+                # Besonders unterstützende Reaktion auf Selbstreflexion
+                self.emotion_engine.set_emotion("introspective", 0.9, "supporting self-reflection")
+                enhanced_response = f"{final_response} Du zeigst echte emotionale Intelligenz!"
+                self.speak(enhanced_response)
+                
+                # Biete weitere Unterstützung an
+                if random.random() < 0.4:  # 40% Chance
+                    follow_up = "Möchtest du mehr über deine Erkenntnisse sprechen oder soll ich dir bei etwas anderem helfen? 🌟"
+                    self.speak(follow_up)
+                    
+            elif pattern.pattern_type.value == "friendly_flirting":
+                # Charmante, aber professionelle Reaktion
+                self.emotion_engine.set_emotion("charmant", 0.8, "friendly interaction")
+                self.speak(final_response)
+                
+            elif pattern.pattern_type.value == "connection_seeking":
+                # Warme, empathische Reaktion
+                self.emotion_engine.set_emotion("empathisch", 0.9, "genuine connection")
+                self.speak(final_response)
+                
+            elif pattern.pattern_type.value == "meta_reflection":
+                # Nachdenkliche, engagierte Reaktion
+                self.emotion_engine.set_emotion("nachdenklich", 0.8, "meta conversation")
+                self.speak(final_response)
+                
+            else:
+                # Standard-Antwort
+                self.speak(final_response)
+                
+            # Füge Kommunikations-Insight hinzu (häufiger bei interessanten Patterns)
+            if pattern.confidence > 0.6:
+                insight = emotional_analysis.get("insight", "")
+                if insight and random.random() < 0.4:  # 40% Chance für Insight
                     self.add_chat_message("💭 THOR Insight", insight)
                     
-        # Logge erkanntes Muster (für Debugging)
+        # Emotionale Reaktion verwenden falls vorhanden
+        if emotion_response:
+            time.sleep(0.5)  # Kurze Pause
+            self.speak(emotion_response)
+        
+        # Logge erkanntes Muster mit erweiterten Informationen
         self.add_chat_message(
-            "🔍 Pattern", 
-            f"Erkannt: {pattern.pattern_type.value} (Confidence: {pattern.confidence:.2f}, Risk: {pattern.risk_score})"
+            "🔍 Pattern Analysis", 
+            f"Erkannt: {pattern.pattern_type.value} | Confidence: {pattern.confidence:.2f} | "
+            f"Risk: {pattern.risk_score} | Emotional Impact: {emotional_state}"
         )
+        
+        # Update GUI mit emotionalem Zustand
+        self.update_emotion_display()
         
     def get_all_capabilities_cool(self) -> str:
         """Hole alle verfügbaren Fähigkeiten mit cooler Attitude"""

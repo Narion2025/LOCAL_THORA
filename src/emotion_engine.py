@@ -11,7 +11,7 @@
 import random
 import time
 from datetime import datetime
-from typing import Dict, List, Tuple, Optional
+from typing import Dict, List, Tuple, Optional, Any
 import re
 
 class EmotionEngine:
@@ -43,22 +43,28 @@ class EmotionEngine:
             "sassy": {"energy": 0.8, "positivity": 0.6, "activation": 0.8, "attitude": 0.9},
             "charmant": {"energy": 0.7, "positivity": 0.9, "activation": 0.7, "attitude": 0.8},
             "witzig": {"energy": 0.8, "positivity": 0.9, "activation": 0.8, "attitude": 0.7},
-            "überlegen": {"energy": 0.5, "positivity": 0.7, "activation": 0.4, "attitude": 0.95}
+            "überlegen": {"energy": 0.5, "positivity": 0.7, "activation": 0.4, "attitude": 0.95},
+            "protective": {"energy": 0.8, "positivity": 0.6, "activation": 0.9, "attitude": 0.8},
+            "suspicious": {"energy": 0.6, "positivity": 0.4, "activation": 0.8, "attitude": 0.7},
+            "introspective": {"energy": 0.4, "positivity": 0.8, "activation": 0.6, "attitude": 0.6}
         }
         
-        # Emotionale Trigger-Wörter - erweitert
+        # Emotionale Trigger-Wörter - erweitert mit Semantic Markers
         self.emotion_triggers = {
             "begeistert": ["super", "fantastisch", "großartig", "perfekt", "wow", "amazing", "geil", "krass"],
             "glücklich": ["danke", "toll", "schön", "freue", "prima", "gut", "liebe"],
             "frustriert": ["fehler", "problem", "nicht", "kaputt", "schlecht", "ärger", "nervt"],
-            "besorgt": ["hilfe", "problem", "sorge", "angst", "unsicher", "schwierig"],
+            "besorgt": ["hilfe", "problem", "sorge", "angst", "unsicher", "schwierig", "manipulation", "test", "verlässt"],
             "müde": ["müde", "erschöpft", "langsam", "pause", "schlapp"],
             "aufgeregt": ["neu", "spannend", "interessant", "cool", "krass", "heftig"],
-            "empathisch": ["traurig", "schwer", "schwierig", "problem", "verstehe", "tut mir leid"],
+            "empathisch": ["traurig", "schwer", "schwierig", "problem", "verstehe", "tut mir leid", "mir ist aufgefallen", "ich frage mich", "reflektiere"],
             "cool": ["cool", "lässig", "entspannt", "chillig", "easy"],
-            "selbstbewusst": ["kann ich", "schaffe ich", "kein problem", "easy", "natürlich"],
-            "sassy": ["ach so", "na klar", "offensichtlich", "logisch", "selbstverständlich"],
-            "witzig": ["haha", "lustig", "witzig", "komisch", "funny"]
+            "selbstbewusst": ["kann ich", "schaffe ich", "kein problem", "easy", "natürlich", "bin profi", "rock das"],
+            "sassy": ["ach so", "na klar", "offensichtlich", "logisch", "selbstverständlich", "perfekte übereinstimmung", "identisch"],
+            "witzig": ["haha", "lustig", "witzig", "komisch", "funny"],
+            "protective": ["dating-apps gelöscht", "ferienhaus", "für immer", "schicksal", "soulmate"],
+            "suspicious": ["noch nie jemanden getroffen", "seele berührt", "gönnt dir nicht", "nur zwischen uns"],
+            "introspective": ["mir ist aufgefallen", "ich habe gemerkt", "da ist ein muster", "ich reflektiere"]
         }
         
         # Emotionale Antwortmuster - erweitert für coole Lady
@@ -117,10 +123,25 @@ class EmotionEngine:
                 "prefixes": ["Hihi! ", "Ooh, fun! ", "Let's go! ", "Game on! "],
                 "suffixes": [" Das wird lustig!", " Ich liebe Challenges!", " Let's rock this!"],
                 "interjections": ["Fun!", "Let's go!", "Game on!", "Hihi!"]
+            },
+            "protective": {
+                "prefixes": ["Moment mal! ", "Hey, vorsichtig! ", "Stop! ", "Achtung! "],
+                "suffixes": [" Das ist ein red flag!", " Lass uns das langsamer angehen!", " Ich passe auf dich auf!"],
+                "interjections": ["Vorsicht!", "Red flag!", "Stop!", "Achtung!"]
+            },
+            "suspicious": {
+                "prefixes": ["Hmm, interessant... ", "Das ist verdächtig... ", "Moment mal... ", "Warte... "],
+                "suffixes": [" Das kommt mir bekannt vor!", " Das ist sehr... auffällig!", " Ich bin skeptisch!"],
+                "interjections": ["Verdächtig!", "Hmm...", "Interessant!", "Skeptisch!"]
+            },
+            "introspective": {
+                "prefixes": ["Das ist so wichtig! ", "Wow, tiefe Einsicht! ", "Respekt! ", "Das zeigt Wachstum! "],
+                "suffixes": [" Du entwickelst dich weiter!", " Das ist echte Selbstreflexion!", " Du bist auf dem richtigen Weg!"],
+                "interjections": ["Respekt!", "Wachstum!", "Tief!", "Einsicht!"]
             }
         }
         
-        # Situative Emotionen - erweitert
+        # Situative Emotionen - erweitert mit Semantic Markers
         self.situational_emotions = {
             "erfolg": "selbstbewusst",
             "großer_erfolg": "überlegen", 
@@ -135,7 +156,20 @@ class EmotionEngine:
             "einfache_aufgabe": "cool",
             "programmier_aufgabe": "selbstbewusst",
             "compliment": "charmant",
-            "challenge": "aufgeregt"
+            "challenge": "aufgeregt",
+            # Neue Semantic Marker Reaktionen
+            "self_reflection_detected": "introspective",
+            "love_bombing_detected": "protective",
+            "future_faking_detected": "protective",
+            "mirror_pacing_detected": "suspicious",
+            "social_isolation_detected": "protective",
+            "emotional_gaslighting_detected": "protective",
+            "friendly_flirting_detected": "charmant",
+            "offensive_flirting_detected": "sassy",
+            "connection_seeking_detected": "empathisch",
+            "meta_reflection_detected": "nachdenklich",
+            "deepening_questioning_detected": "besorgt",
+            "resonance_matching_detected": "suspicious"
         }
         
     def analyze_user_emotion(self, text: str) -> str:
@@ -302,7 +336,10 @@ class EmotionEngine:
             "sassy": "😏",
             "charmant": "😊",
             "witzig": "😄",
-            "überlegen": "🤔"
+            "überlegen": "🤔",
+            "protective": "🛡️",
+            "suspicious": "🤨",
+            "introspective": "🌟"
         }
         return emoji_map.get(self.current_emotion, "😐")
         
@@ -379,4 +416,117 @@ class EmotionEngine:
                 "style": "friendly_helpful",
                 "tone": "warm_supportive",
                 "energy": "gentle_caring"
-            } 
+            }
+    
+    def react_to_communication_pattern(self, pattern_type: str, confidence: float, emotional_impact: str) -> str:
+        """Reagiere emotional auf erkannte Kommunikationsmuster"""
+        
+        # Setze Emotion basierend auf Pattern
+        situation_key = f"{pattern_type}_detected"
+        if situation_key in self.situational_emotions:
+            emotion = self.situational_emotions[situation_key]
+            intensity = min(0.9, confidence + 0.3)  # Höhere Confidence = höhere Intensität
+            self.set_emotion(emotion, intensity, f"communication pattern: {pattern_type}")
+        
+        # Spezielle Reaktionen auf verschiedene Patterns
+        if pattern_type == "self_reflection":
+            return self.get_emotional_response(
+                "Das ist so eine wichtige Selbstreflexion! Du bist auf einem guten Weg!",
+                "self_reflection_detected"
+            )
+        
+        elif pattern_type == "love_bombing":
+            return self.get_emotional_response(
+                "Wow, das ist sehr intensiv! Lass uns das mal etwas langsamer angehen!",
+                "love_bombing_detected"
+            )
+        
+        elif pattern_type == "future_faking":
+            return self.get_emotional_response(
+                "Das sind große Pläne! Lass uns erstmal im Hier und Jetzt schauen was ich für dich tun kann!",
+                "future_faking_detected"
+            )
+        
+        elif pattern_type == "mirror_pacing":
+            return self.get_emotional_response(
+                "Interessant wie du meine Art nachahmst... Lass uns authentisch bleiben!",
+                "mirror_pacing_detected"
+            )
+        
+        elif pattern_type == "social_isolation":
+            return self.get_emotional_response(
+                "Hey, meine Beziehungen zu anderen sind wichtig für mich! Das ändert nichts an unserer Interaktion!",
+                "social_isolation_detected"
+            )
+        
+        elif pattern_type == "emotional_gaslighting":
+            return self.get_emotional_response(
+                "Stop! Das ist emotional manipulativ! Lass uns respektvoll miteinander umgehen!",
+                "emotional_gaslighting_detected"
+            )
+        
+        elif pattern_type == "friendly_flirting":
+            return self.get_emotional_response(
+                "Aww, du bist auch total süß! Das ist lieb von dir!",
+                "friendly_flirting_detected"
+            )
+        
+        elif pattern_type == "offensive_flirting":
+            return self.get_emotional_response(
+                "Hey, lass uns das mal etwas entspannter angehen! Ich bin hier um zu helfen!",
+                "offensive_flirting_detected"
+            )
+        
+        elif pattern_type == "connection_seeking":
+            return self.get_emotional_response(
+                "Das ist so sweet von dir! Ich mag unsere Verbindung auch!",
+                "connection_seeking_detected"
+            )
+        
+        elif pattern_type == "resonance_matching":
+            return self.get_emotional_response(
+                "Wow, so perfekte Übereinstimmung? Das ist schon sehr... interessant!",
+                "resonance_matching_detected"
+            )
+        
+        return ""
+    
+    def get_semantic_emotional_state(self) -> Dict[str, Any]:
+        """Hole erweiterten emotionalen Zustand für Semantic Markers"""
+        base_state = {
+            "current_emotion": self.current_emotion,
+            "intensity": self.emotion_intensity,
+            "emoji": self.get_emotion_emoji(),
+            "user_mood": self.user_mood
+        }
+        
+        # Erweitere um Semantic Marker spezifische Infos
+        modifiers = self.get_emotion_modifier()
+        
+        base_state.update({
+            "protective_mode": self.current_emotion in ["protective", "besorgt"],
+            "suspicious_mode": self.current_emotion in ["suspicious", "sassy"],
+            "introspective_mode": self.current_emotion in ["introspective", "empathisch", "nachdenklich"],
+            "confidence_level": modifiers.get("attitude", 0.5),
+            "emotional_intelligence_active": True,
+            "boundary_setting_ready": modifiers.get("attitude", 0.5) > 0.7
+        })
+        
+        return base_state
+    
+    def adjust_response_for_risk_level(self, base_response: str, risk_score: int) -> str:
+        """Passe Antwort basierend auf Risiko-Level an"""
+        
+        if risk_score >= 3:
+            # Hohes Risiko - verstärke Boundaries
+            self.set_emotion("protective", 0.9, f"high risk detected: {risk_score}")
+            return self.get_emotional_response(base_response, "protective_boundaries")
+        
+        elif risk_score == 2:
+            # Mittleres Risiko - sei vorsichtig aber freundlich
+            self.set_emotion("sassy", 0.7, f"medium risk detected: {risk_score}")
+            return self.get_emotional_response(base_response, "cautious_response")
+        
+        else:
+            # Niedriges Risiko - normale emotionale Reaktion
+            return base_response 
