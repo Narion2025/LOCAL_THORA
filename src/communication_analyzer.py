@@ -38,7 +38,8 @@ class CommunicationAnalyzer:
                 "keywords": [
                     "charmant", "sympathisch", "witzig", "ansteckend", "süß", "interessant",
                     "gefällt mir", "mag ich", "cool", "beeindruckt", "angenehm", "erfrischend",
-                    "highlight", "perfekt", "gespannt", "gefährlich", "kompliment", "fan"
+                    "highlight", "perfekt", "gespannt", "gefährlich", "kompliment", "fan",
+                    "humor", "gelacht", "lachen", "spaß", "chatten", "schreiben"
                 ],
                 "phrases": [
                     r"du bist.*?(witzig|interessant|cool|süß|charmant)",
@@ -224,13 +225,13 @@ class CommunicationAnalyzer:
             confidence = 0.0
             matched_phrases = []
             
-            # Prüfe Keywords
+            # Prüfe Keywords (höhere Gewichtung)
             keyword_matches = sum(1 for keyword in pattern_data["keywords"] 
                                 if keyword in text_lower)
             if keyword_matches > 0:
-                confidence += (keyword_matches / len(pattern_data["keywords"])) * 0.4
+                confidence += (keyword_matches / len(pattern_data["keywords"])) * 0.6
             
-            # Prüfe Phrase-Patterns
+            # Prüfe Phrase-Patterns (höhere Gewichtung)
             phrase_matches = 0
             for phrase_pattern in pattern_data["phrases"]:
                 matches = re.findall(phrase_pattern, text_lower, re.IGNORECASE)
@@ -239,10 +240,14 @@ class CommunicationAnalyzer:
                     matched_phrases.extend(matches)
             
             if phrase_matches > 0:
-                confidence += min(phrase_matches / len(pattern_data["phrases"]), 1.0) * 0.6
+                confidence += min(phrase_matches / len(pattern_data["phrases"]), 1.0) * 0.8
             
-            # Speichere bestes Match
-            if confidence > highest_confidence and confidence > 0.3:
+            # Bonus für mehrere Treffer
+            if keyword_matches > 0 and phrase_matches > 0:
+                confidence += 0.2
+            
+            # Speichere bestes Match (niedrigere Schwelle)
+            if confidence > highest_confidence and confidence > 0.15:
                 highest_confidence = confidence
                 best_match = CommunicationPattern(
                     pattern_type=comm_type,

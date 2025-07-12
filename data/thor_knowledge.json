@@ -22,5 +22,17 @@
     "response": "❌ Anthropic API Key nicht gefunden. Bitte in .env setzen.",
     "timestamp": "2025-07-12T02:32:02.067912",
     "learned_patterns": []
+  },
+  "du_hast_einen_mega_heiße_stimme": {
+    "task": "du hast einen mega heiße stimme",
+    "response": "❌ Anthropic API Key nicht gefunden. Bitte in .env setzen.",
+    "timestamp": "2025-07-12T02:32:43.794770",
+    "learned_patterns": []
+  },
+  "mache_ordnung_auf_laufwerk_downlow": {
+    "task": "mache ordnung auf laufwerk downlow",
+    "response": "❌ Anthropic API Key nicht gefunden. Bitte in .env setzen.",
+    "timestamp": "2025-07-12T02:33:12.903153",
+    "learned_patterns": []
   }
 }
