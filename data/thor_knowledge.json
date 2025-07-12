@@ -34,5 +34,17 @@
     "response": "❌ Anthropic API Key nicht gefunden. Bitte in .env setzen.",
     "timestamp": "2025-07-12T02:33:12.903153",
     "learned_patterns": []
+  },
+  "was_kannst": {
+    "task": "was kannst",
+    "response": "❌ Anthropic API Key nicht gefunden. Bitte in .env setzen.",
+    "timestamp": "2025-07-12T03:33:39.156079",
+    "learned_patterns": []
+  },
+  "welche_key": {
+    "task": "welche key",
+    "response": "❌ Anthropic API Key nicht gefunden. Bitte in .env setzen.",
+    "timestamp": "2025-07-12T03:33:58.822249",
+    "learned_patterns": []
   }
 }
